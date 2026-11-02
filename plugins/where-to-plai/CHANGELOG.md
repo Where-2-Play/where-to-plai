@@ -8,10 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- `PRIVACY.md`: the plugin collects, stores and sends no personal data; web research runs through Claude's own tools. `plugin.json` links it as `privacyPolicyUrl`, and links the usage guide as `documentationUrl`, so both show on the directory listing.
+- `PRIVACY.md`: the plugin collects, stores and sends no personal data; web research runs through Claude's own tools. `plugin.json` links it as `privacyPolicyUrl`, links the usage guide as `documentationUrl`, and the authors' terms on wheretoplay.co as `termsOfServiceUrl`, so all three show on the directory listing.
 
 ### Changed
 - READMEs: the credit line links Jörg Müller's website and GitHub handle.
+- `worksheet-view`: dropped the legacy Open Sans font formats (`.eot` for old Internet Explorer, SVG fonts for old iOS). The pages keep WOFF2, WOFF and TrueType and look the same.
 
 ## [1.0.0] — 2026-11-02
 
