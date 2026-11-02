@@ -76,7 +76,7 @@ where-to-plai/
 
 ## Status
 
-This is **version 1.0.2**. The `persona-*` and `advisor-*` agents — the advisory board — are explicitly experimental "Framework plus": provocations, not verdicts; the advisory board has five members. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
+This is **version 1.0.3**. The `persona-*` and `advisor-*` agents — the advisory board — are explicitly experimental "Framework plus": provocations, not verdicts; the advisory board has five members. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
 
 ## Feedback
 
