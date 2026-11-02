@@ -31,7 +31,7 @@ where-to-plai/                   (repo root — github.com/Where-2-Play/where-to
 └── plugins/
     └── where-to-plai/           ← the installable plugin (this subfolder is the cache)
         ├── .claude-plugin/plugin.json
-        ├── README.md · LICENSE · NOTICE.md · licenses/
+        ├── README.md · LICENSE · NOTICE.md · PRIVACY.md · licenses/
         ├── skills/              9 skills
         ├── agents/              9 agents
         ├── workflows/           3 wf-*.js + README

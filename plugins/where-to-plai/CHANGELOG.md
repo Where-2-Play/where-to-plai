@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `PRIVACY.md`: the plugin collects, stores and sends no personal data; web research runs through Claude's own tools. `plugin.json` links it as `privacyPolicyUrl`, and links the usage guide as `documentationUrl`, so both show on the directory listing.
+
+### Changed
+- READMEs: the credit line links Jörg Müller's website and GitHub handle.
+
 ## [1.0.0] — 2026-11-02
 
 First public release, prepared for Anthropic's plugin directory.

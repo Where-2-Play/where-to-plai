@@ -118,7 +118,7 @@ Tiers 2–3 use the Claude Code `Workflow` tool. On other surfaces the skill **f
 
 **Never**
 
-- The plugin's code makes no network calls of its own, sends no telemetry and stores no credentials. Apart from the web searches and page fetches described above, which Claude makes with its own tools, the plugin sends nothing anywhere.
+- The plugin's code makes no network calls of its own, sends no telemetry and stores no credentials. Apart from the web searches and page fetches described above, which Claude makes with its own tools, the plugin sends nothing anywhere. See [PRIVACY.md](PRIVACY.md).
 
 The plugin collects no user data.
 
