@@ -144,4 +144,4 @@ This plugin is distributed from the [`where-to-plai`](https://github.com/Where-2
 
 ## Credits
 
-Methodology: **Sharon Tal & Marc Gruber**, *Where to Play* (the Market Opportunity Navigator). Plugin engineering: Jörg Müller (ghostwriter), on behalf of the authors.
+Methodology: **Sharon Tal & Marc Gruber**, *Where to Play* (the Market Opportunity Navigator). Plugin engineering: Jörg Müller ([co-intelligence.ai](https://www.co-intelligence.ai), GitHub [@codeeater](https://github.com/codeeater)), ghostwriter on behalf of the authors.
