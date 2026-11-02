@@ -36,7 +36,7 @@ What you expected to happen instead.
 
 - **Claude Code version:**
 - **Surface:** e.g. Claude Code CLI, or another Agent Skills surface
-- **Plugin version:** e.g. `1.0.0` (see `.claude-plugin/plugin.json`)
+- **Plugin version:** e.g. `1.0.1` (see `.claude-plugin/plugin.json`)
 - **OS:**
 
 ## Additional context

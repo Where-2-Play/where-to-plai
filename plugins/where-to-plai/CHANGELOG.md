@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-11-02
+
+Listing links and a lighter worksheet view, after the first directory scan.
+
 ### Added
 - `PRIVACY.md`: the plugin collects, stores and sends no personal data; web research runs through Claude's own tools. `plugin.json` links it as `privacyPolicyUrl`, links the usage guide as `documentationUrl`, and the authors' terms on wheretoplay.co as `termsOfServiceUrl`, so all three show on the directory listing.
 
@@ -138,5 +142,6 @@ Initial prototype scaffold for co-creation with the methodology's authors.
 - [README.md](README.md) — plugin overview, installation, and usage.
 - [Documentation](../../docs/usage.md) — long-form usage, methodology, and architecture docs.
 
-[Unreleased]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Where-2-Play/where-to-plai/releases/tag/v1.0.0

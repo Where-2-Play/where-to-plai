@@ -14,7 +14,7 @@ sit at two levels:
   single plugin whose `source` is `./plugins/where-to-plai`. This is what `/plugin marketplace add
   Where-2-Play/where-to-plai` reads.
 - **Plugin — `plugins/where-to-plai/.claude-plugin/plugin.json`.** The plugin manifest: name
-  `where-to-plai`, version `1.0.0`, license `CC-BY-NC-SA-4.0`, © Sharon Tal & Marc Gruber.
+  `where-to-plai`, version `1.0.1`, license `CC-BY-NC-SA-4.0`, © Sharon Tal & Marc Gruber.
 
 The important structural choice is that the plugin lives in the **`plugins/where-to-plai/` subfolder, not
 at the repo root**. Only that subfolder is the plugin `source`, so **only it enters the install cache**
