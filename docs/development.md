@@ -129,6 +129,12 @@ find plugins -path '*/workflows/*.js' -exec sh -c \
 
 If any line prints a `✗` or a non-zero exit, fix it before pushing — CI fails on the same check.
 
+CI also runs three more jobs:
+
+- **Anthropic directory check** installs a pinned Claude Code CLI and runs `claude plugin validate plugins/where-to-plai --profile directory --strict`, the local subset of the directory's own checks (no login needed). Run it locally the same way before merging to `main`; raise the pinned `CLAUDE_CODE_VERSION` in the workflow now and then.
+- **Worksheet view renders** runs `render.py` on `wtp-data.example.json` under Python 3.9 and 3.13 with nothing installed, and checks that all four pages, both stylesheets, the fonts and the assets come out.
+- **Versions consistent** checks that `plugin.json` and `marketplace.json` carry the same version, that the CHANGELOG has a section for it, that both READMEs' status lines name it, and, on a `vX.Y.Z` tag, that the tag matches.
+
 ## Testing locally in Claude Code
 
 Load the plugin straight from your working tree, no install step:

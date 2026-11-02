@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- CI: three more checks — Anthropic's directory validation (`claude plugin validate --profile directory --strict`), a render test of the worksheet view under Python 3.9 and 3.13, and a version-consistency check that also runs on release tags.
+
 ## [1.0.2] — 2026-11-02
 
 Repository set up as a maintained project rather than a community open-source project.

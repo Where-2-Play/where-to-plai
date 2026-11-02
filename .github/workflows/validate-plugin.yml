@@ -3,6 +3,7 @@ name: Validate plugin
 on:
   push:
     branches: [ main, next ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main ]
 
@@ -79,4 +80,94 @@ jobs:
             { echo '(async () => {'; sed 's/^export const meta/const meta/' "$js"; echo '})'; } > "$tmp"
             node --check "$tmp" && echo "✓ $js" || { echo "✗ syntax error: $js"; fail=1; }
           done < <(find plugins -path '*/workflows/*.js')
+          exit $fail
+
+  directory-check:
+    name: Anthropic directory check
+    runs-on: ubuntu-latest
+    env:
+      # Pinned so a new CLI release can't change the result without notice.
+      # Raise it now and then (npm view @anthropic-ai/claude-code version).
+      CLAUDE_CODE_VERSION: "2.1.316"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Claude Code CLI
+        run: npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+
+      # Runs the local subset of the checks Anthropic's plugin directory runs.
+      # No login or API key is needed; --strict fails on warnings too.
+      - name: claude plugin validate --profile directory --strict
+        run: claude plugin validate plugins/where-to-plai --profile directory --strict
+
+  render-test:
+    name: Worksheet view renders (Python ${{ matrix.python }})
+    # ubuntu-24.04 still offers Python 3.9, the oldest version the renderer supports.
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [ "3.9", "3.13" ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      # A fresh Python with nothing installed: Jinja2 and MarkupSafe must come
+      # from the plugin's own _vendor/ folder.
+      - name: Render the example data
+        run: |
+          R=plugins/where-to-plai/skills/worksheet-view/renderer
+          python -c "import jinja2" 2>/dev/null && { echo "✗ jinja2 is installed on the runner; the test would not prove the vendored copy works"; exit 1; }
+          python "$R/render.py" "$R/wtp-data.example.json" "$RUNNER_TEMP/navigator"
+
+      - name: Check the output
+        run: |
+          OUT="$RUNNER_TEMP/navigator"
+          fail=0
+          for f in overview.html ws1.html ws2.html ws3.html css/bootstrap.css css/app.css; do
+            [ -s "$OUT/$f" ] && echo "✓ $f" || { echo "✗ missing or empty: $f"; fail=1; }
+          done
+          ls "$OUT"/fonts/*.woff2 >/dev/null 2>&1 && echo "✓ fonts copied" || { echo "✗ no fonts copied"; fail=1; }
+          [ -d "$OUT/assets" ] && echo "✓ assets copied" || { echo "✗ assets not copied"; fail=1; }
+          for p in overview ws1 ws2 ws3; do
+            grep -q 'css/bootstrap.css' "$OUT/$p.html" && grep -q 'css/app.css' "$OUT/$p.html" \
+              || { echo "✗ $p.html does not link both stylesheets"; fail=1; }
+          done
+          find plugins -name __pycache__ | grep -q . && { echo "✗ the renderer left __pycache__ in the plugin"; fail=1; }
+          exit $fail
+
+  version-check:
+    name: Versions consistent
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: plugin.json, marketplace.json, READMEs, CHANGELOG and tag agree
+        run: |
+          fail=0
+          V=$(jq -r '.version' plugins/where-to-plai/.claude-plugin/plugin.json)
+          M=$(jq -r '.version' .claude-plugin/marketplace.json)
+          echo "plugin.json: $V · marketplace.json: $M"
+          [ "$V" = "$M" ] || { echo "✗ plugin.json and marketplace.json versions differ"; fail=1; }
+          grep -q "^## \[$V\]" plugins/where-to-plai/CHANGELOG.md \
+            && echo "✓ CHANGELOG has a [$V] section" || { echo "✗ CHANGELOG has no '## [$V]' section"; fail=1; }
+          for r in README.md plugins/where-to-plai/README.md; do
+            grep -q "version $V\*\*" "$r" && echo "✓ $r says version $V" || { echo "✗ $r status line doesn't say version $V"; fail=1; }
+          done
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            T="${GITHUB_REF#refs/tags/v}"
+            [ "$T" = "$V" ] && echo "✓ tag v$T matches" || { echo "✗ tag v$T doesn't match version $V"; fail=1; }
+          fi
           exit $fail
