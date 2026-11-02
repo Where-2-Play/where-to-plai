@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- READMEs: the status line no longer calls the `persona-*` agents part of the advisory board. The board is the four `advisor-*` agents plus the Score Examiner; the personas are separate optimist/skeptic debate lenses.
+
 ## [1.0.3] — 2026-11-02
 
 Repository checks only; the plugin itself is unchanged.
