@@ -1,0 +1,82 @@
+name: Validate plugin
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  validate:
+    name: Validate marketplace & plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # jq and node are preinstalled on ubuntu-latest runners.
+
+      - name: Validate marketplace.json
+        run: |
+          MP=.claude-plugin/marketplace.json
+          echo "→ $MP"
+          jq empty "$MP"
+          for f in name owner owner.name plugins; do
+            jq -e ".$f" "$MP" >/dev/null || { echo "✗ missing marketplace field: $f"; exit 1; }
+          done
+          jq -e '.plugins | type == "array"' "$MP" >/dev/null || { echo "✗ .plugins must be an array"; exit 1; }
+          echo "✓ marketplace.json valid"
+
+      - name: No duplicate plugin names
+        run: |
+          dups=$(jq -r '.plugins[].name' .claude-plugin/marketplace.json | sort | uniq -d)
+          [ -z "$dups" ] || { echo "✗ duplicate plugin names: $dups"; exit 1; }
+          echo "✓ no duplicate plugin names"
+
+      - name: Validate each plugin
+        run: |
+          # Iterate string-source plugins declared in the marketplace.
+          jq -r '.plugins[] | select(.source | type == "string") | .source' \
+            .claude-plugin/marketplace.json | while read -r src; do
+            echo "→ plugin at $src"
+            [ -d "$src" ] || { echo "✗ dir not found: $src"; exit 1; }
+            pj="$src/.claude-plugin/plugin.json"
+            [ -f "$pj" ] || { echo "✗ plugin.json not found: $pj"; exit 1; }
+            jq empty "$pj" || { echo "✗ invalid JSON: $pj"; exit 1; }
+            jq -e '.name' "$pj" >/dev/null || { echo "✗ plugin.json missing 'name'"; exit 1; }
+            [ -f "$src/README.md" ] || echo "⚠️  no README.md in $src (recommended)"
+            echo "✓ $src plugin.json valid"
+          done
+
+      - name: Validate skill frontmatter
+        run: |
+          fail=0
+          while IFS= read -r skill; do
+            head -n1 "$skill" | grep -q '^---$' || { echo "✗ $skill: no frontmatter"; fail=1; continue; }
+            fm=$(awk 'NR>1 && /^---$/{exit} NR>1{print}' "$skill")
+            echo "$fm" | grep -q '^name:'        || { echo "✗ $skill: frontmatter missing 'name'"; fail=1; }
+            echo "$fm" | grep -q '^description:'  || { echo "✗ $skill: frontmatter missing 'description'"; fail=1; }
+          done < <(find plugins -name SKILL.md)
+          [ "$fail" -eq 0 ] && echo "✓ all SKILL.md frontmatter valid"
+          exit $fail
+
+      - name: Validate agent frontmatter
+        run: |
+          fail=0
+          while IFS= read -r agent; do
+            head -n1 "$agent" | grep -q '^---$' || { echo "✗ $agent: no frontmatter"; fail=1; }
+          done < <(find plugins -path '*/agents/*.md')
+          [ "$fail" -eq 0 ] && echo "✓ all agent files have frontmatter"
+          exit $fail
+
+      - name: Syntax-check workflow scripts
+        run: |
+          fail=0
+          # Workflow scripts run inside an async function (top-level await and
+          # return are allowed there), so check them wrapped the same way.
+          tmp="$RUNNER_TEMP/wf-check.js"
+          while IFS= read -r js; do
+            { echo '(async () => {'; sed 's/^export const meta/const meta/' "$js"; echo '})'; } > "$tmp"
+            node --check "$tmp" && echo "✓ $js" || { echo "✗ syntax error: $js"; fail=1; }
+          done < <(find plugins -path '*/workflows/*.js')
+          exit $fail

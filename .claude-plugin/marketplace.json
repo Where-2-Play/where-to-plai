@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "where-to-plai",
+  "version": "1.0.0",
+  "description": "Self-hosted marketplace for the Where-to-PlAI plugin — the Market Opportunity Navigator for Claude Code.",
+  "owner": {
+    "name": "Sharon Tal & Marc Gruber"
+  },
+  "plugins": [
+    {
+      "name": "where-to-plai",
+      "source": "./plugins/where-to-plai",
+      "description": "Guides startup and innovation teams through the Market Opportunity Navigator (Where-to-Play): three worksheets as living documents, human-in-the-loop, with market research for the Attractiveness Map.",
+      "category": "strategy",
+      "keywords": [
+        "where-to-play",
+        "market-opportunity-navigator",
+        "startup",
+        "innovation"
+      ]
+    }
+  ]
+}

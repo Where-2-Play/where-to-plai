@@ -1,0 +1,20 @@
+{
+  "name": "where-to-plai",
+  "version": "1.0.0",
+  "description": "Guides startup and innovation teams through the Market Opportunity Navigator (Where-to-Play) — three worksheets as living documents, human-in-the-loop, with market research for the Attractiveness Map.",
+  "author": {
+    "name": "Sharon Tal & Marc Gruber"
+  },
+  "homepage": "https://www.wheretoplay.co",
+  "repository": "https://github.com/Where-2-Play/where-to-plai",
+  "license": "CC-BY-NC-SA-4.0",
+  "keywords": [
+    "where-to-play",
+    "market-opportunity-navigator",
+    "startup",
+    "innovation",
+    "market-strategy",
+    "opportunity-set",
+    "attractiveness-map"
+  ]
+}
