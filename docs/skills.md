@@ -95,8 +95,8 @@ Evaluates **each opportunity** (one worksheet per opportunity) on two dimensions
 (value creation, Y-axis, factors 1–3) and **Challenge** (value capture, X-axis, factors 4–6) — and
 places it in one of four zones: **Gold Mine / Moon Shot / Quick Win / Questionable**. It walks the
 **six factors** (Compelling reason to buy · Market volume · Economic viability · Implementation
-obstacles · Time to revenues · External risks), scores each on the qualitative scale **Low → Mid →
-High → Super High**, and marks **confidence per factor** (🔴 no evidence / 🟠 some / 🟢 significant).
+obstacles · Time to revenues · External risks), scores each on the qualitative seven-step scale **Low → Mid →
+High → Super High** plus the half-steps between them (the zone midline sits at Mid–High), and marks **confidence per factor** (🔴 no evidence / 🟠 some / 🟢 significant).
 It is the strictest expression of the non-negotiable: it **never sets scores and never
 auto-aggregates.** It opens with the six factors' guiding questions, offers a coordinated research
 pass (declinable), and compares each opportunity with those already scored. For each factor it brings
@@ -164,9 +164,9 @@ colour** (the team sets both on Worksheet 2; the skill may propose a colour). So
 the findings by default. The skill is
 **capability-driven**: it first checks whether the Claude Code `Workflow` tool exists on this surface,
 then picks one of **three tiers** — Tier 1 (the bundled `market-research` subagent, the portable
-fallback when `Workflow` is absent), Tier 2 (the built-in `deep-research` workflow for broad open
-questions), or Tier 3 (the bundled `wf-market-research.js`, factor-tuned for **Market volume** and
-**Economic viability**, cross-checking every number across ≥2 sources). Flags `--deep` (Tier 2) and
+fallback when `Workflow` is absent), Tier 2 (the built-in `deep-research` workflow, the default for Implementation
+obstacles, Time to revenues, External risks and any broad or open question), or Tier 3 (the bundled `wf-market-research.js`, factor-tuned for **Market volume** and
+**Economic viability**, checking every number with a three-lens panel: source, recency, scope). Flags `--deep` (Tier 2) and
 `--wtp` (Tier 3) override the default when the team is explicit. On the fallback it tells the team in
 one plain sentence, without tool names. See [workflows.md](workflows.md) for
 the full tier model.

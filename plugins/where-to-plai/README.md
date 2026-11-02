@@ -26,7 +26,7 @@ The Where-to-Play methodology usually lives in single chatbot prompts that cold-
 Or test locally without installing:
 
 ```
-claude --plugin-dir /path/to/where-to-plai
+claude --plugin-dir /path/to/where-to-plai/plugins/where-to-plai
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ Then work the worksheets:
 | `/where-to-plai:revisit` | re-open the worksheets as new evidence arrives (the "breathing" loop) |
 | `/where-to-plai:advisory-board` | convene the advisor panel to review WS2/WS3 (experimental) |
 | `/where-to-plai:customer-discovery` | draft a "Compelling reason to buy" score from synthetic, skeptical customer interviews (experimental) |
-| `/where-to-plai:worksheet-view` | render the worksheets as a visual one-page navigator |
+| `/where-to-plai:worksheet-view` | render the worksheets as visual web pages (Overview, WS1, WS2, WS3) |
 
 The skills are also **auto-activating**: describe your intent in plain language ("help us pick a market", "score this opportunity") and Claude Code selects the matching step — you don't have to memorize the commands.
 
@@ -81,13 +81,13 @@ The `market-research` skill picks an engine by **capability** — is the `Workfl
 
 1. **Bundled subagent** — the **fallback** when `Workflow` is absent; **portable**, works on any Agent Skills surface.
 2. **Built-in `deep-research` workflow** — broad, adversarially-verified web research (**Claude Code only**).
-3. **Bundled `wf-market-research` workflow** — factor-tuned, cross-checks every number across ≥2 sources (**Claude Code only**, invoked by `scriptPath` straight from the plugin — no install step).
+3. **Bundled `wf-market-research` workflow** — factor-tuned, checks every number with a three-lens panel (source, recency, scope) (**Claude Code only**, invoked by `scriptPath` straight from the plugin — no install step).
 
 Tiers 2–3 use the Claude Code `Workflow` tool. On other surfaces the skill **falls back to Tier 1** and says so in one plain sentence — the plugin never hard-depends on a Claude-Code-only feature. Every tier returns findings with their sources, shown by default; the factor's confidence colour stays the team's call.
 
 ## Requirements
 
-- **Claude Code** for the full experience (the `/where-to-plai:*` commands, the bundled workflows, and `worksheet-view` rendering).
+- **Claude Code** for the full experience (the `/where-to-plai:*` commands and the bundled workflows).
 - The **skills and agents are portable** — they run on any Agent Skills surface. Only the three bundled `workflows/*.js` and the `deep-research` tier are Claude-Code-only, and the plugin degrades gracefully where they are absent.
 - `worksheet-view` renders with a bundled Python script (`skills/worksheet-view/renderer/render.py`), run with plain `python3` (Windows: `py`). It needs **Python 3.9 or newer** and nothing else: its two libraries, Jinja2 and MarkupSafe, ship inside the plugin, so there is nothing to install.
 
@@ -132,11 +132,11 @@ The plugin collects no user data.
 
 ## Status
 
-This is **version 1.0.1**. The `persona-*` and `advisor-*` agents (the advisory board) are explicitly experimental "Framework plus" — provocations, not verdicts; the advisory board has five members. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
+This is **version 1.0.2**. The `persona-*` and `advisor-*` agents (the advisory board) are explicitly experimental "Framework plus" — provocations, not verdicts; the advisory board has five members. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
 
-## Contributing
+## Feedback
 
-This plugin is distributed from the [`where-to-plai`](https://github.com/Where-2-Play/where-to-plai) repository. See the repository root for contribution guidelines, the changelog, and the project-level overview.
+This plugin is distributed from the [`where-to-plai`](https://github.com/Where-2-Play/where-to-plai) repository. Feedback and bug reports are welcome as issues there. The changelog is [CHANGELOG.md](CHANGELOG.md) in this folder; the repository root holds the project-level overview.
 
 ## License
 

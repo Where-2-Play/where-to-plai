@@ -14,7 +14,7 @@ sit at two levels:
   single plugin whose `source` is `./plugins/where-to-plai`. This is what `/plugin marketplace add
   Where-2-Play/where-to-plai` reads.
 - **Plugin — `plugins/where-to-plai/.claude-plugin/plugin.json`.** The plugin manifest: name
-  `where-to-plai`, version `1.0.1`, license `CC-BY-NC-SA-4.0`, © Sharon Tal & Marc Gruber.
+  `where-to-plai`, version `1.0.2`, license `CC-BY-NC-SA-4.0`, © Sharon Tal & Marc Gruber.
 
 The important structural choice is that the plugin lives in the **`plugins/where-to-plai/` subfolder, not
 at the repo root**. Only that subfolder is the plugin `source`, so **only it enters the install cache**
@@ -42,12 +42,12 @@ where-to-plai/                   (repo root — github.com/Where-2-Play/where-to
 
 Install: `/plugin marketplace add Where-2-Play/where-to-plai` then
 `/plugin install where-to-plai@where-to-plai`. To test without installing, point Claude Code at the plugin
-folder directly: `claude --plugin-dir /path/to/where-to-plai`.
+folder directly: `claude --plugin-dir /path/to/where-to-plai/plugins/where-to-plai`.
 
 ## Auto-discovery: skills, agents, workflows
 
 The plugin declares **no explicit component lists** in `plugin.json` — the manifest carries only metadata
-(name, version, description, license, keywords). Components are picked up by **convention-based
+(name, version, description, author, links, license, keywords). Components are picked up by **convention-based
 auto-discovery** from their directories:
 
 - **`skills/`** — one subfolder per skill, each with a `SKILL.md` (plus optional `references/` and
@@ -57,7 +57,7 @@ auto-discovery** from their directories:
   `where-to-play` guide, one per worksheet (`opportunity-set`, `attractiveness-map`, `agile-focus`), plus
   `market-research`, `revisit`, `advisory-board`, `customer-discovery` and `worksheet-view`.
 - **`agents/`** — one Markdown file per subagent, discovered by filename. **9 agents** ship: 5 working
-  (`opportunity-discovery`, `market-research`, `score-examiner`, `persona-optimist`, `persona-skeptic`)
+  (`opportunity-discovery`, `market-research`, `score-examiner`, and the experimental `persona-optimist`, `persona-skeptic`)
   and 4 experimental advisory-board `advisor-*` agents.
 - **`workflows/`** — `wf-*.js` scripts, auto-discovered and surfaced in the `/` menu. **3 workflows** ship.
 
@@ -113,7 +113,7 @@ spawn the advisor agents directly.
 | Component | Runs on any Agent Skills surface | Claude-Code-only |
 |---|---|---|
 | Skills (9) | ✅ | |
-| Agents (16) | ✅ | |
+| Agents (9) | ✅ | |
 | Bundled `workflows/*.js` (3) | | ✅ (need the `Workflow` tool) |
 | `deep-research` tier | | ✅ |
 | `worksheet-view` rendering | ✅ (bundled Python `render.py`; plain `python3`, Jinja2 bundled, nothing to install) | |

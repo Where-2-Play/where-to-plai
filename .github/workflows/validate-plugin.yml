@@ -2,9 +2,9 @@ name: Validate plugin
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ main, next ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ main ]
 
 jobs:
   validate:

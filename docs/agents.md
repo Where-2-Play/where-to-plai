@@ -1,7 +1,8 @@
 # Agents
 
 The agentic decomposition of the Where-to-Play process. Nine subagents ship with the
-plugin, in two groups: **five working agents** that do concrete process work on a worksheet,
+plugin, in two groups: **five working agents** that do concrete process work on a worksheet (two of them, the
+`persona-*` debate lenses, are experimental),
 and **four advisor agents** for the advisory board — experimental "Framework plus" lenses
 that provoke the team's thinking.
 
@@ -61,9 +62,9 @@ is inferred or unknown*, with an evidence colour per finding (🟢 cross-checked
 confidence colour (the team sets both); never launders an estimate into a fact, and never
 reports synthetic-persona output as research.
 
-> The `market-research` *skill* wraps this agent as its portable fallback tier; on Claude
-> Code it can instead call the bundled `wf-market-research` workflow. See
-> [workflows.md](workflows.md).
+> The `market-research` *skill* uses this agent as its portable fallback (Tier 1). Where the
+> `Workflow` tool exists, it runs Claude Code's built-in `deep-research` workflow, or the bundled
+> `wf-market-research` for Market volume and Economic viability. See [workflows.md](workflows.md).
 
 ### `score-examiner`
 

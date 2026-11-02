@@ -14,11 +14,12 @@ Briefly describe the change and the motivation (the "why").
 
 ## Checklist
 
-- [ ] Ran local validation (`claude --plugin-dir .`) and/or the **Validate
-      plugin** CI is green.
+- [ ] We agreed on this change in an issue first: #
+- [ ] Ran the local checks in docs/development.md and/or the **Validate
+      plugin** CI is green; tested with `claude --plugin-dir plugins/where-to-plai`.
 - [ ] Skill/agent frontmatter is intact; any new workflow script passes
-      the syntax check (CI step, or CONTRIBUTING.md check 5).
-- [ ] Updated the changelog and bumped the version in
+      the syntax check (CI step, or check 5 in docs/development.md).
+- [ ] Updated `plugins/where-to-plai/CHANGELOG.md` and bumped the version in
       `.claude-plugin/marketplace.json` **and**
       `plugins/where-to-plai/.claude-plugin/plugin.json` if this is a
       user-facing change.

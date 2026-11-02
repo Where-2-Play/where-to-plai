@@ -15,7 +15,7 @@ A Claude Code plugin that guides startup and innovation teams through the Market
 - [Documentation map](#documentation-map)
 - [Repository layout](#repository-layout)
 - [Status](#status)
-- [Contributing](#contributing)
+- [Feedback](#feedback)
 - [License](#license)
 
 ## Background
@@ -32,7 +32,7 @@ A Claude Code plugin that guides startup and innovation teams through the Market
 Or test locally without installing:
 
 ```
-claude --plugin-dir /path/to/where-to-plai
+claude --plugin-dir /path/to/where-to-plai/plugins/where-to-plai
 ```
 
 ## Usage
@@ -51,12 +51,13 @@ From there you work the three worksheets — Market Opportunity Set, Attractiven
 |---|---|
 | [docs/usage.md](docs/usage.md) | Getting started and the day-to-day workflow through the worksheets. |
 | [docs/skills.md](docs/skills.md) | The 9 skills — the guide plus one per worksheet and the supporting steps. |
-| [docs/agents.md](docs/agents.md) | The agent roster: 5 working agents and the 4 experimental advisory-board advisors. |
+| [docs/agents.md](docs/agents.md) | The agent roster: 5 working agents (2 of them experimental personas) and the 4 experimental advisory-board advisors. |
 | [docs/workflows.md](docs/workflows.md) | The three bundled Claude Code workflows (`workflows/wf-*.js`) and the market-research tiers. |
 | [docs/templates.md](docs/templates.md) | The worksheet templates scaffolded into your project workspace. |
 | [docs/examples.md](docs/examples.md) | The bundled worked examples — Augury, Inergio, Ceal. |
 | [docs/methodology.md](docs/methodology.md) | The Market Opportunity Navigator / Where-to-Play methodology behind the plugin. |
 | [docs/architecture.md](docs/architecture.md) | How skills, agents, workflows, and templates fit together. |
+| [docs/development.md](docs/development.md) | How the plugin is built, checked and released. |
 | [plugin README](plugins/where-to-plai/README.md) | The installable plugin's own README — overview, components, requirements. |
 
 ## Repository layout
@@ -68,19 +69,18 @@ where-to-plai/
 ├── docs/                   # repository documentation (this map)
 ├── .github/                # CI (validate-plugin.yml) and issue templates
 ├── .claude-plugin/         # marketplace manifest
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md         # feedback and contributions
 ├── SECURITY.md
 └── LICENSE                 # CC BY-NC-SA 4.0
 ```
 
 ## Status
 
-This is **version 1.0.1**. The `persona-*` and `advisor-*` agents — the advisory board — are explicitly experimental "Framework plus": provocations, not verdicts; the advisory board has five members. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
+This is **version 1.0.2**. The `persona-*` and `advisor-*` agents — the advisory board — are explicitly experimental "Framework plus": provocations, not verdicts; the advisory board has five members. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
 
-## Contributing
+## Feedback
 
-Feedback and bug reports are welcome as issues. Please open an issue before a pull request, and read the [Contributing guide](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md) first. For anything security-related, see the [security policy](SECURITY.md).
+Feedback and bug reports are welcome as [issues](https://github.com/Where-2-Play/where-to-plai/issues). Pull requests are possible after agreeing on them in an issue; see [CONTRIBUTING.md](CONTRIBUTING.md). For anything security-related, see the [security policy](SECURITY.md).
 
 ## License
 

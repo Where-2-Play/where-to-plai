@@ -51,7 +51,7 @@ alongside everything else (see [team collaboration](#team-collaboration-through-
 
 The guide then shepherds you through the three worksheets **one gated phase at a time**, tracking
 progress on a todo list and confirming with your team before advancing. The sequence is logical but
-not rigid: a technology-push venture can start at Worksheet 1's re-linking, and a team that already
+not rigid: a technology-push venture starts directly with Worksheet 1, and a team that already
 has a market in mind can move quickly — but the guide will gently resist letting you skip the search
 entirely, because "focusing from day one is a myth."
 

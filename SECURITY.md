@@ -25,7 +25,7 @@ include:
   files** or reaching out to unexpected destinations.
 - An **unsafe render or workflow script** — e.g. the `worksheet-view` Python
   renderer or a `wf-*.js` workflow processing worksheet content in a way that
-  could execute injected code, write outside the intended `navigator/`
+  could execute injected code, write outside the intended `where-to-play/`
   workspace, or leak file contents.
 - A **prompt-injection** path where untrusted content pulled into a worksheet
   (e.g. fetched market-research text) could hijack the agent's instructions.
@@ -48,5 +48,4 @@ acknowledge your report and work with you on a fix and coordinated disclosure.
 
 ## See also
 
-- [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Plugin README](plugins/where-to-plai/README.md)

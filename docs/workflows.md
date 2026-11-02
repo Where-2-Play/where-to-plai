@@ -6,8 +6,8 @@ schemas, and deterministic post-processing. They live under
 [`plugins/where-to-plai/workflows/`](../plugins/where-to-plai/workflows/) and ship inside the
 installed plugin, so a skill can invoke one straight from disk with no separate install step.
 
-A workflow is never the entry point. The **skill** is: it adds the capability check, brief the
-right question, and write the result into the `where-to-play/` workspace. The `wf-*` file is the
+A workflow is never the entry point. The **skill** is: it runs the capability check, briefs the
+right question, and writes the result into the `where-to-play/` workspace. The `wf-*` file is the
 raw engine the skill calls. This split is also why the scripts carry the `wf-` prefix — Claude
 Code auto-discovers everything in `workflows/` into the `/` menu, so `wf-customer-discovery`
 avoids colliding with the same-purpose `customer-discovery` **skill** (without the prefix the
@@ -25,10 +25,11 @@ Workflow({
 })
 ```
 
-Each script parses `args` defensively: it accepts either a real object or a JSON-encoded string,
-so a caller that stringifies its arguments does not silently fall back to defaults and lose
-context like `workspace` or `value_prop`. `wf-market-research` additionally accepts a bare string
-as a free-form question. Every script `return`s a structured result object the skill then formats
+`wf-advisory-board` and `wf-customer-discovery` parse `args` defensively: they accept either a
+real object or a JSON-encoded string, so a caller that stringifies its arguments does not silently
+fall back to defaults and lose context like `workspace` or `value_prop`. `wf-market-research`
+treats any string as a free-form question, so pass it a real object when you want `opportunity`
+and `factor` to count. Every script `return`s a structured result object the skill then formats
 and writes to the workspace.
 
 ## `wf-market-research`
@@ -67,8 +68,8 @@ Invoked by the **[`market-research`](skills.md)** skill as **Tier 3** — see th
 Convenes the experimental "Framework plus" advisory board over the team's **Worksheet 2 and/or
 Worksheet 3**. The board *provokes* — it surfaces agreements, disagreements and assumptions to
 test — but **never scores or picks a market**. `args` selects the worksheet (`ws2` / `ws3` /
-`both`), the `workspace` path, an optional `focus`, and an optional `board` (agent ids, or
-`"full"`) to change the default five.
+`both`), the `workspace` path, an optional `focus`, and an optional `board` (an array of agent
+ids) to convene a subset of the five members.
 
 Three phases:
 
@@ -139,7 +140,8 @@ feature.
   contract* by spawning the advisor agents directly as subagents (a model-computed tally instead
   of the workflow's schema-validated one).
 - **`customer-discovery`** — Path A runs `wf-customer-discovery`; **Path B** reproduces the same
-  flow in-skill. Because in-skill role-play shares one context across personas, the fallback has
+  flow without the workflow: personas are derived in-skill and interviewed as subagents where
+  supported, otherwise role-played one after another in-skill. Shared-context role-play gives
   less persona independence and is treated as lower rigor.
 - **`market-research`** — falls back to its bundled subagent (see the tier model).
 

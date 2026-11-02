@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] — 2026-11-02
+
+Repository set up as a maintained project rather than a community open-source project.
+
+### Changed
+- Removed the Code of Conduct. `CONTRIBUTING.md` is now a short page: feedback and bug reports as issues, pull requests after agreeing on them in an issue, and the rights contributors grant the authors. The build, check and release guide moved to `docs/development.md`.
+- READMEs: the "Contributing" section is now "Feedback".
+- Docs brought in line with the plugin after a full read-through: agent count and grouping, the `--plugin-dir` path (the plugin subfolder), the advisory board's `board` option (a subset of the five; no "full" option), the market-research tiers and the three-lens number check, the customer-discovery fallback, `worksheet-view` running outside Claude Code, the technology-push entry point, and the changelog's location. `PRIVACY.md` states more precisely that the plugin sends nothing on its own.
+- CI runs on `main` and `next` (the old `master` trigger is gone).
+
 ## [1.0.1] — 2026-11-02
 
 Listing links and a lighter worksheet view, after the first directory scan.
@@ -142,6 +152,7 @@ Initial prototype scaffold for co-creation with the methodology's authors.
 - [README.md](README.md) — plugin overview, installation, and usage.
 - [Documentation](../../docs/usage.md) — long-form usage, methodology, and architecture docs.
 
-[Unreleased]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Where-2-Play/where-to-plai/releases/tag/v1.0.0

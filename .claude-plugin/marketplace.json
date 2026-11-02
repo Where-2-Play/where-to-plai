@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "where-to-plai",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Self-hosted marketplace for the Where-to-PlAI plugin — the Market Opportunity Navigator for Claude Code.",
   "owner": {
     "name": "Sharon Tal & Marc Gruber"

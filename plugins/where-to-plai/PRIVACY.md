@@ -4,7 +4,7 @@ The Where to PlAI plugin does not collect, store or send any personal data.
 
 ## What the plugin does with your data
 
-- **Nothing leaves your machine through the plugin.** The plugin has no server, no account, no analytics and no telemetry. Its code makes no network calls of its own.
+- **The plugin sends nothing on its own.** It has no server, no account, no analytics and no telemetry, and its code makes no network calls. Web research goes only through Claude's own tools (below).
 - **Your work stays in your project.** The plugin reads and writes Markdown and JSON files in the `where-to-play/` folder of your project, and reads notes or research files your team puts into the project. These files stay where you keep them.
 - **Web research uses Claude's own tools.** When you ask for market research or customer discovery, Claude searches the web and fetches pages with its built-in `WebSearch` and `WebFetch` tools, under your Claude permissions. The search queries are built from the market opportunity you are researching. Avoid putting confidential details into a research request if you don't want them in a search query.
 - **The worksheet view runs locally.** Its Python script turns your worksheet data into HTML pages on your machine and makes no network calls.
@@ -15,4 +15,4 @@ The plugin runs inside Claude Code or Cowork. What you type and what Claude read
 
 ## Contact
 
-Questions about this plugin: info@wheretoplay.co. To report a security issue, see the repository's security policy.
+Questions about this plugin: info@wheretoplay.co. To report a security issue, see the [security policy](https://github.com/Where-2-Play/where-to-plai/blob/main/SECURITY.md).

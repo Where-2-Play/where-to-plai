@@ -26,7 +26,7 @@ Augury "listens" to machines and offers predictive maintenance from the sounds t
 
 ### Inergio — the complete Navigator, all three worksheets
 
-Inergio builds portable power packs on solid-oxide fuel-cell technology for off-grid and backup applications — the methodology's running flagship case. The example is a finished one-pager spanning the whole journey: Worksheet 1 (core abilities re-linked into four opportunities), Worksheet 2 (all four opportunities scored, with the hand-placed "X" marks transcribed onto the `Low → Mid → High → Super High` scales and each placed in a map quadrant), and Worksheet 3 (a Primary market chosen, Backup and Growth options assessed for relatedness, and a filled Agile Focus Dartboard). An appendix captures two supporting Strategyzer canvases from the same source deck. Use it as the end-to-end output template and to see how the three worksheets connect — it is also the best reference for the visual scoring mechanic and a completed dartboard.
+Inergio builds portable power packs on solid-oxide fuel-cell technology for off-grid and backup applications — the methodology's running flagship case. The example is a finished one-pager spanning the whole journey: Worksheet 1 (core abilities re-linked into four opportunities), Worksheet 2 (all four opportunities scored, with the hand-placed "X" marks transcribed onto the `Low → Mid → High → Super High` scales and each placed on the map, with the RVs on the border between Quick Win and Questionable), and Worksheet 3 (a Primary market chosen, Backup and Growth options assessed for relatedness, and a filled Agile Focus Dartboard). An appendix captures two supporting Strategyzer canvases from the same source deck. Use it as the end-to-end output template and to see how the three worksheets connect — it is also the best reference for the visual scoring mechanic and a completed dartboard.
 
 - **File:** [`../plugins/where-to-plai/skills/where-to-play/references/examples/inergio-full-navigator.md`](../plugins/where-to-plai/skills/where-to-play/references/examples/inergio-full-navigator.md)
 
@@ -40,13 +40,13 @@ Each example lives under a skill's `references/examples/` directory and is loade
 
 The examples-index is the single catalogue of what is bundled. It also records that the authors' wider archive holds further cases (FeelIT, FlyAbility, Toni, Kanso Dx, Gopa, biaWear) which are **not** shipped here, and warns that older artifacts can use outdated factor terminology — the Worksheet 2 spec is always authoritative on the current factor names.
 
-## Contributing new examples
+## Adding new examples
 
-New worked examples are welcome, with a few ground rules so they stay useful as few-shots:
+New worked examples follow a few ground rules so they stay useful as few-shots:
 
 1. **Rights first.** Only add a case you have the authors' permission to bundle. Every example file opens with the `© Sharon Tal & Marc Gruber — worked example, from the authors' teaching material (wheretoplay.co).` provenance line; keep it.
 2. **Place it beside the skill it teaches.** Put the file under the relevant skill's `references/examples/` directory, matching the worksheet it illustrates (Worksheet 1 → `opportunity-set`, Worksheet 2 → `attractiveness-map`, full Navigator → `where-to-play`).
-3. **Match the house format.** Lead with an HTML comment header capturing `worked_example`, `worksheet`, `framework`, and `source_files`; then the provenance line; then a one-line "_Illustrates…_" note; then the worked content. Follow the shape of the existing three files.
+3. **Match the house format.** Lead with an HTML comment header capturing `worked_example`, `worksheet` (or `worksheets` for a multi-worksheet case), `framework`, and `source_files`; then the provenance line; then a one-line "_Illustrates…_" note; then the worked content. Follow the shape of the existing three files.
 4. **Show the reasoning, not just the answer.** The value of a few-shot is the *why* behind each score or link — real figures, sub-question notes, and the qualitative judgement. Keep the authors' scoring philosophy intact (understanding over numbers; no mechanical averaging; confidence flags where useful).
 5. **Register it in the catalogue.** Add the new case to [`../plugins/where-to-plai/skills/where-to-play/references/examples-index.md`](../plugins/where-to-plai/skills/where-to-play/references/examples-index.md) — both the "Bundled examples" list and the worksheet → example mapping — and cite it from the skill's `SKILL.md`, the way the current three are cited.
 
