@@ -23,11 +23,6 @@ Questions about usage rights: info@wheretoplay.co.
 | What | Files | Terms |
 |---|---|---|
 | **Where to Play logo** (listing icon) | .claude-plugin/icon.png | © Sharon Tal & Marc Gruber, included with permission. Not covered by the license above. |
-| **Where-to-Play web app design** | skills/worksheet-view/renderer/static/assets/ (icons, images) and the app styles in skills/worksheet-view/renderer/static/css/app.css | © Sharon Tal & Marc Gruber, included with permission. Not covered by the license above. |
-| **Bootstrap 4.6.2** | skills/worksheet-view/renderer/static/css/bootstrap.css | MIT — [licenses/MIT-Bootstrap.txt](licenses/MIT-Bootstrap.txt) |
-| **Open Sans 1.10** (Google) | skills/worksheet-view/renderer/static/fonts/ | Apache-2.0 — [licenses/Apache-2.0-OpenSans.txt](licenses/Apache-2.0-OpenSans.txt) |
-| **Jinja2 3.1.6** (Pallets) | `skills/worksheet-view/renderer/_vendor/jinja2/`, bundled unmodified | BSD-3-Clause — [licenses/BSD-3-Clause-Jinja2.txt](licenses/BSD-3-Clause-Jinja2.txt) |
-| **MarkupSafe 3.0.4** (Pallets) | `skills/worksheet-view/renderer/_vendor/markupsafe/`, bundled unmodified | BSD-3-Clause — [licenses/BSD-3-Clause-MarkupSafe.txt](licenses/BSD-3-Clause-MarkupSafe.txt) |
 
 ## Trademark
 

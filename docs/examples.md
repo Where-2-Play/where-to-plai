@@ -36,7 +36,7 @@ Each example lives under a skill's `references/examples/` directory and is loade
 
 - `opportunity-set` cites `references/examples/ceal-ws1.md` as its filled Worksheet 1 few-shot.
 - `attractiveness-map` cites `references/examples/augury-ws2.md` as its scored Worksheet 2 few-shot.
-- `where-to-play` cites `references/examples/inergio-full-navigator.md` (the complete Navigator) and, alongside it, a catalogue — `references/examples-index.md` — that maps each worksheet to its best bundled example so an agent can pull the right one. The `agile-focus` and `worksheet-view` skills reach across to the same Inergio file for the filled dartboard and the render reference.
+- `where-to-play` cites `references/examples/inergio-full-navigator.md` (the complete Navigator) and, alongside it, a catalogue — `references/examples-index.md` — that maps each worksheet to its best bundled example so an agent can pull the right one. The `agile-focus` skill reaches across to the same Inergio file for the filled dartboard.
 
 The examples-index is the single catalogue of what is bundled. It also records that the authors' wider archive holds further cases (FeelIT, FlyAbility, Toni, Kanso Dx, Gopa, biaWear) which are **not** shipped here, and warns that older artifacts can use outdated factor terminology — the Worksheet 2 spec is always authoritative on the current factor names.
 

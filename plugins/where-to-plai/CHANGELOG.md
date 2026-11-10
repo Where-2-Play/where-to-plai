@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- **Worksheet view**, temporarily. Anthropic's plugin directory currently accepts from community plugins only Markdown, text, JSON, YAML and common image files, so its Python renderer, templates, styles and fonts (and the licenses of the bundled Jinja2, MarkupSafe, Bootstrap and Open Sans) are out. We are working on bringing it back.
+- **Pre-built workflow scripts** (`workflows/wf-*.js`): the directory accepts workflow scripts only from Verified organizations. Each workflow now ships as a Markdown blueprint (see Changed); we are working on bringing the scripts back.
+
+### Changed
+- Market research (Tier 3), the advisory board and customer discovery now ship their workflow as a Markdown **blueprint** (`references/workflow-blueprint.md` in each skill). In Claude Code, Claude writes the workflow from the blueprint and runs it; elsewhere the skills fall back to subagents as before. The market-research verification now uses three lens agents that each check all figures, instead of three agents per figure.
+- Skill and agent frontmatter written the way the directory reads it: `argument-hint` values and skill descriptions are in double quotes (trigger phrases inside a description now use single quotes), and `tools` is a comma-separated string.
+- CI: a new check enforces the directory's file rules (file types, no `#!`, plain-text and correctly quoted frontmatter); the render test and the workflow-script syntax check are gone.
+- `plugin.json` now sets `icon`, so the directory listing shows the Where to Play logo (the file was in the plugin since 1.0.0 but nothing pointed to it).
+- Docs, READMEs, `NOTICE.md`, `PRIVACY.md`, `SECURITY.md` and the GitHub templates updated accordingly.
+
 ## [1.0.4] — 2026-11-02
 
 README correction.

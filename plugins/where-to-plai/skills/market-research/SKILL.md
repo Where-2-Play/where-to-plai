@@ -1,6 +1,6 @@
 ---
 name: market-research
-description: This skill should be used to gather market evidence for a Worksheet 2 factor of the Market Opportunity Navigator — the "deep research" support for the Attractiveness Map. Triggers include "research this market", "market research for worksheet 2", "how big is this market", "find evidence for market volume", "research the competition", "TAM SAM SOM for this opportunity", "validate this assumption with research", "who are the competitors", "deep research this factor", "summarise our desk research for a factor". Use it to run focused, cited market research per opportunity/factor and write the evidence into the workspace with confidence flags.
+description: "This skill should be used to gather market evidence for a Worksheet 2 factor of the Market Opportunity Navigator — the 'deep research' support for the Attractiveness Map. Triggers include 'research this market', 'market research for worksheet 2', 'how big is this market', 'find evidence for market volume', 'research the competition', 'TAM SAM SOM for this opportunity', 'validate this assumption with research', 'who are the competitors', 'deep research this factor', 'summarise our desk research for a factor'. Use it to run focused, cited market research per opportunity/factor and write the evidence into the workspace with confidence flags."
 argument-hint: "<opportunity> [factor: e.g. market-volume | economic-viability | external-risk] [--deep | --wtp]"
 ---
 
@@ -13,7 +13,7 @@ Gather **cited, uncertainty-flagged** market evidence to inform Worksheet 2 scor
 **First check: is the `Workflow` tool available?** That alone decides the default — not stakes, not surface guesswork.
 
 - **`Workflow` available** (Claude Code):
-  - **Tier 3** (the plugin's own `wf-market-research.js`) for **exactly two factors — Market volume and Economic viability**; its number cross-checking is built for these.
+  - **Tier 3** (the plugin's own WtP research workflow, written from `references/workflow-blueprint.md`) for **exactly two factors — Market volume and Economic viability**; its number cross-checking is built for these.
   - **Tier 2** (built-in `deep-research`) for every other factor (Time to revenues, Implementation obstacles, External risks) and every broad or open question (competitor landscape, general context).
 - **`Workflow` not available** (some Cowork / Agent-SDK surfaces): **fall back to Tier 1**, the bundled `market-research` subagent — only then, never as the default. Never let a missing tool block the research. Tell the team in one plain sentence, without tool or tier names — e.g. *"This environment can't run the larger automated research team, so I'll use individual research helpers instead — same goal, a bit more step by step."*
 - Explicit flags override the default: **`--deep` → Tier 2**, **`--wtp` → Tier 3** (both need `Workflow`; without it they degrade to Tier 1).
@@ -34,17 +34,15 @@ Workflow({ name: "deep-research", args: "<opportunity> — <factor>: <the specif
 ```
 Generic deep research (scope → parallel search → fetch → 3-vote verify → cited synthesis): strong breadth and verification, but **not** WtP-tuned.
 
-### Tier 3 — Bundled WtP workflow (factor-tuned, numbers cross-checked)
-Ships with the plugin — no install step:
-```
-Workflow({
-  scriptPath: "${CLAUDE_PLUGIN_ROOT}/workflows/wf-market-research.js",
-  args: { opportunity: "<name>", factor: "<one of the six factors>", constraints: "<segment / geography / horizon>" }
-})
-```
-It splits the factor into falsifiable sub-questions (top-down + bottom-up for sizing), fans out searches, then runs a **3-lens adversarial panel on every number** (source credibility / recency / scope match, majority rule, downgrading confidence on figures that fail) and a **completeness critic** for gaps. It returns 🔴/🟠/🟢 flags, ranges where sources disagree, and prioritised open questions — **evidence only, never a score**.
+### Tier 3 — WtP workflow written from the blueprint (factor-tuned, numbers cross-checked)
+The plugin ships this tier as a **blueprint**, not as a script: `references/workflow-blueprint.md` fixes the phases, prompts, lenses and output schemas.
 
-> The `args` shapes differ by design: Tier 2 takes a single **string**, Tier 3 a **structured object** (`opportunity` / `factor` / `constraints`). Don't normalise one to the other.
+1. Read `references/workflow-blueprint.md` in full. If the `workflow-authoring` skill is listed, load it for the script API.
+2. Fill the inputs: `opportunity`, `factor`, `constraints` (segment / geography / horizon).
+3. Write the script from the blueprint and run it inline with `Workflow({ script: … })`. Keep the blueprint's phases, prompts, lenses and schemas as they are; the number cross-checking is the point of this tier, so don't drop or merge steps. Running this workflow is what the team asked for when they asked for this research.
+4. If `Workflow` refuses or the script fails, fix an obvious script error once; otherwise use Tier 2, or Tier 1 if that fails too.
+
+It splits the factor into falsifiable sub-questions (top-down + bottom-up for sizing), fans out searches, then checks **every number through three lenses** (source credibility / recency / scope match, majority rule, downgrading confidence on figures that fail) and runs a **completeness critic** for gaps. It returns 🔴/🟠/🟢 flags, ranges where sources disagree, and prioritised open questions — **evidence only, never a score**.
 
 ## What to do (any tier)
 
@@ -63,4 +61,4 @@ It splits the factor into falsifiable sub-questions (top-down + bottom-up for si
 ## Additional resources
 
 - `references/research-guide.md` — how to brief the engine per factor, source-quality and cross-checking rules, the evidence colours, the "surface uncertainty, don't bluff" (I-CALM) principle, and tier-selection guidance.
-- `${CLAUDE_PLUGIN_ROOT}/workflows/wf-market-research.js` — the bundled WtP research workflow (Tier 3) source.
+- `references/workflow-blueprint.md` — the Tier 3 workflow specification: phases, prompts, verification lenses and output schemas.

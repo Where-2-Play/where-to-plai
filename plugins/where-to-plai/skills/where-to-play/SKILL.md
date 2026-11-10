@@ -1,7 +1,7 @@
 ---
 name: where-to-play
-description: This skill should be used to start and run the guided Market Opportunity Navigator / Where-to-Play process for a startup or innovation team (methodology by Sharon Tal & Marc Gruber). It is the entry point that kicks off the whole journey. Triggers include "where should we play", "which market should we enter", "start the market opportunity navigator", "guide us through where to play", "apply the where to play framework", "help us find our market", "set up our navigator", "we don't know which market to target". Use it to set up the workspace and shepherd the team through all three worksheets, one gated step at a time.
-argument-hint: [optional: short description of your venture / technology]
+description: "This skill should be used to start and run the guided Market Opportunity Navigator / Where-to-Play process for a startup or innovation team (methodology by Sharon Tal & Marc Gruber). It is the entry point that kicks off the whole journey. Triggers include 'where should we play', 'which market should we enter', 'start the market opportunity navigator', 'guide us through where to play', 'apply the where to play framework', 'help us find our market', 'set up our navigator', 'we don't know which market to target'. Use it to set up the workspace and shepherd the team through all three worksheets, one gated step at a time."
+argument-hint: "[optional: short description of your venture / technology]"
 ---
 
 # Where to Play — guided Market Opportunity Navigator

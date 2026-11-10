@@ -1,10 +1,10 @@
 # Skills
 
-The **9 skills** are the conceptual layer the plugin applies itself — the framework knowledge and
+The **8 skills** are the conceptual layer the plugin applies itself — the framework knowledge and
 process logic that turns the Market Opportunity Navigator (MON) / *Where-to-Play* methodology by
 Sharon Tal & Marc Gruber into guided, file-based work. One skill is the entry-point guide, three
-map one-to-one onto the three worksheets, and five are cross-cutting supports for research,
-review, longitudinal updates, and visualization.
+map one-to-one onto the three worksheets, and four are cross-cutting supports for research,
+review, and longitudinal updates.
 
 Every skill is both a **slash command** and **auto-activating**. You can invoke a step explicitly
 with `/where-to-plai:<name>`, or simply describe your intent in plain language ("help us pick a
@@ -28,7 +28,6 @@ decide.** No skill ever auto-aggregates scores or picks a market — human-in-th
 | `/where-to-plai:customer-discovery` | Worksheet 2, Factor 1 | synthetic interviews → draft score *(experimental)* |
 | `/where-to-plai:advisory-board` | Worksheet 2 / 3 review | multi-perspective provocation *(experimental)* |
 | `/where-to-plai:revisit` | all worksheets | the longitudinal "breathing" loop |
-| `/where-to-plai:worksheet-view` | all worksheets | render the Navigator as visual HTML pages |
 
 ## The guide
 
@@ -165,8 +164,8 @@ the findings by default. The skill is
 **capability-driven**: it first checks whether the Claude Code `Workflow` tool exists on this surface,
 then picks one of **three tiers** — Tier 1 (the bundled `market-research` subagent, the portable
 fallback when `Workflow` is absent), Tier 2 (the built-in `deep-research` workflow, the default for Implementation
-obstacles, Time to revenues, External risks and any broad or open question), or Tier 3 (the bundled `wf-market-research.js`, factor-tuned for **Market volume** and
-**Economic viability**, checking every number with a three-lens panel: source, recency, scope). Flags `--deep` (Tier 2) and
+obstacles, Time to revenues, External risks and any broad or open question), or Tier 3 (the WtP research workflow, written from the skill's blueprint, factor-tuned for **Market volume** and
+**Economic viability**, checking every number through three lenses: source, recency, scope). Flags `--deep` (Tier 2) and
 `--wtp` (Tier 3) override the default when the team is explicit. On the fallback it tells the team in
 one plain sentence, without tool names. See [workflows.md](workflows.md) for
 the full tier model.
@@ -177,8 +176,8 @@ volume", "research the competition", "TAM SAM SOM for this opportunity", "who ar
 
 **Bundled references:** `references/research-guide.md` (how to brief the engine per factor,
 source-quality and cross-checking rules, the evidence colours, the "surface uncertainty, don't
-bluff" principle, and tier selection). The Tier-3 workflow source is at
-`../plugins/where-to-plai/workflows/wf-market-research.js`.
+bluff" principle, and tier selection) and `references/workflow-blueprint.md` (the Tier-3 workflow:
+phases, prompts, verification lenses and output schemas).
 
 ### `customer-discovery` — draft Factor-1 score *(experimental)*
 
@@ -196,15 +195,15 @@ personas and interviews to `02_attractiveness-map/<opportunity>-customer-intervi
 SYNTHETIC, and adds the draft under the factor's *Reasoning* — the Score and Confidence fields stay
 for the team. It *does* output a draft score — but it is **directional only, a prompt to prep real interviews, never a substitute for getting out of the
 building.** It is never called research. The team accepts or overrides; final (re)scoring routes back to `attractiveness-map`. It
-is capability-driven (Path A via the bundled `wf-customer-discovery.js` workflow when `Workflow`
+is capability-driven (Path A runs a workflow Claude writes from the skill's blueprint when `Workflow`
 exists; a lower-rigor in-skill role-play fallback otherwise).
 
 **Auto-activates on:** "synthetic customer interviews", "draft a compelling-reason-to-buy score",
 "simulate customer feedback for this opportunity", "customer discovery for worksheet 2", "what would
 customers think of this opportunity".
 
-**Bundled references:** none in a `references/` folder; the flow is driven by the bundled
-`../plugins/where-to-plai/workflows/wf-customer-discovery.js` workflow.
+**Bundled references:** `references/workflow-blueprint.md` (the interview workflow: phases, prompts
+and output schemas).
 
 ### `advisory-board` — multi-perspective review *(experimental)*
 
@@ -217,9 +216,8 @@ your opinion. It **never assigns a score or picks the Primary.** Each member is 
 person**; the thinker lenses are anonymous experts named by their function (a board of five, each
 labelled by its lens: Tal & Gruber — method fidelity, Score Examiner — evidence check, Jobs Analyst —
 jobs to be done / disruption, Beachhead Strategist — beachhead / whole product, Risk Inverter —
-inversion / risk). Capability-driven: Path A runs the bundled
-`wf-advisory-board.js` workflow (deterministic parallel fan-out, schema-validated consensus tally)
-when `Workflow` exists; Path B reproduces the same three-phase output contract (digest → parallel
+inversion / risk). Capability-driven: Path A runs a workflow Claude writes from the skill's
+blueprint (parallel fan-out, schema-validated consensus tally) when `Workflow` exists; Path B reproduces the same three-phase output contract (digest → parallel
 board → synthesis) via subagents otherwise. If Worksheet 2 is empty it stops and advises filling it
 first — the board reviews an existing analysis, it does not create one. See [agents.md](agents.md) for
 the roster.
@@ -229,7 +227,7 @@ think", "get diverse perspectives on our worksheets", "panel review", "get a sec
 map".
 
 **Bundled references:** `references/board.md` (the roster, each advisor's lens, and the "anonymous
-experts, not copies of people" framing).
+experts, not copies of people" framing) and `references/workflow-blueprint.md` (the board workflow).
 
 ### `revisit` — the breathing loop
 
@@ -252,35 +250,15 @@ market", "our assumptions changed", "breathe the worksheets".
 **Bundled references:** `references/revisit-guide.md` (the re-evaluation triggers, the assumption-map
 mechanics, and how to keep score history without overwriting).
 
-### `worksheet-view` — render the Navigator
+### Worksheet view — temporarily removed
 
-`/where-to-plai:worksheet-view`
-
-Renders the team's filled worksheets as a set of **self-contained, read-only HTML pages** that look
-exactly like the Where-to-Play web app (using the real app's HTML, CSS, fonts, and images). It is
-**presentation, not editing** — the `.md` files stay the single source of truth; it never changes a
-worksheet, scores anything, or invents content. The design is two stages: **①** the skill compacts
-the worksheets into a `wtp-data.json` (reading + judgement, fitting the app's fixed slots), then **②**
-a deterministic bundled Python renderer maps that JSON to the app's exact markup. Output is a
-`where-to-play/navigator/` folder of four cross-linked pages — **Overview / WS1 / WS2 / WS3** — that
-open by double-click, no server. Empty fields stay empty (rendered as the app's faint placeholders).
-WS1 shows the whole application → segment → sub-segment tree with each leaf's status (on the set /
-screened out / parked); WS3 shows the Primary once, not again as a candidate. Synthetic interview
-files (`*-customer-interviews.md`) are skipped.
-
-**Auto-activates on:** "visualize the worksheets", "render the navigator", "show our results like the
-web app", "present the where-to-play worksheets as HTML", "make the navigator page", "show the
-dartboard and map".
-
-**Bundled references / renderer:** `renderer/schema.md` (the precise `wtp-data.json` schema and the
-enum→markup mapping), `renderer/wtp-data.example.json` (a complete worked example to copy the shape
-from), and `renderer/render.py` + `renderer/templates/` + `renderer/static/` (the deterministic
-renderer carrying the real app's HTML/CSS/fonts/images). It runs with plain `python3 render.py …`
-(Windows: `py`, Python 3.9+); its Jinja2 dependency ships in `renderer/_vendor/`, so nothing is installed.
+Anthropic's plugin directory currently doesn't accept the files the worksheet view needs (its Python
+renderer, templates, styles and fonts), so we took it out for now. It rendered the filled worksheets as
+web pages in the look of the Where-to-Play web app. We're working on bringing it back.
 
 ## See also
 
 - [agents.md](agents.md) — the working agents and the experimental advisory board these skills invoke
-- [workflows.md](workflows.md) — the three bundled workflows and the market-research tier model
+- [workflows.md](workflows.md) — the three workflows (shipped as blueprints) and the market-research tier model
 - [methodology.md](methodology.md) — the framework each worksheet maps to
 - [usage.md](usage.md) — a full worked run, worksheet by worksheet

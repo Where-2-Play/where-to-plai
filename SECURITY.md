@@ -7,13 +7,10 @@ any concern against the current `main` / newest tag before reporting.
 
 ## Attack surface
 
-`where-to-plai` is a Claude Code plugin. It ships **prompts, skills, and agent
-definitions** (Markdown) plus a small amount of glue code — three bundled
-Claude-Code workflows (`plugins/where-to-plai/workflows/wf-*.js`) and one Python
-renderer (`plugins/where-to-plai/skills/worksheet-view/renderer/render.py`).
-The renderer uses two third-party libraries, Jinja2 3.1.6 and MarkupSafe 3.0.4,
-vendored unmodified in `plugins/where-to-plai/skills/worksheet-view/renderer/_vendor/`;
-a vulnerability in those upstream versions is in scope as it affects the plugin.
+`where-to-plai` is a Claude Code plugin. It ships only **prompts, skills, agent
+definitions and templates** (Markdown), its manifest (JSON) and an icon — no
+scripts and no third-party code. Three skills carry Markdown blueprints from which
+Claude writes a Claude Code workflow at run time.
 
 There is **no network service, no server, and no daemon** — nothing listens on a
 port, and the plugin stores no credentials. Classic attack surface is therefore
@@ -23,10 +20,9 @@ include:
 
 - A skill or agent prompt that could be steered into **exfiltrating project
   files** or reaching out to unexpected destinations.
-- An **unsafe render or workflow script** — e.g. the `worksheet-view` Python
-  renderer or a `wf-*.js` workflow processing worksheet content in a way that
-  could execute injected code, write outside the intended `where-to-play/`
-  workspace, or leak file contents.
+- A **workflow blueprint** that could lead Claude to write a workflow that
+  processes worksheet content in a way that executes injected code, writes
+  outside the intended `where-to-play/` workspace, or leaks file contents.
 - A **prompt-injection** path where untrusted content pulled into a worksheet
   (e.g. fetched market-research text) could hijack the agent's instructions.
 

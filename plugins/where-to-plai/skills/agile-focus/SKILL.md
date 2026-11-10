@@ -1,7 +1,7 @@
 ---
 name: agile-focus
-description: This skill should be used for Worksheet 3 of the Market Opportunity Navigator — setting the Agile Focus Strategy. Triggers include "worksheet 3", "agile focus", "which market should be our primary", "backup and growth options", "agile focus dartboard", "market relatedness", "keep options open", "pursue now keep open store", "choose our primary market". Use it to choose one Primary opportunity, select Backup and Growth options, assess relatedness, and fill the dartboard.
-argument-hint: [optional: candidate primary opportunity]
+description: "This skill should be used for Worksheet 3 of the Market Opportunity Navigator — setting the Agile Focus Strategy. Triggers include 'worksheet 3', 'agile focus', 'which market should be our primary', 'backup and growth options', 'agile focus dartboard', 'market relatedness', 'keep options open', 'pursue now keep open store', 'choose our primary market'. Use it to choose one Primary opportunity, select Backup and Growth options, assess relatedness, and fill the dartboard."
+argument-hint: "[optional: candidate primary opportunity]"
 ---
 
 # Worksheet 3 — Agile Focus Strategy

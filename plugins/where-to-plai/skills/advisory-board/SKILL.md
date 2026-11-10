@@ -1,6 +1,6 @@
 ---
 name: advisory-board
-description: This skill should be used to convene the experimental Where-to-Play advisory board — a panel of named advisor agents that review the current Worksheet 2 and/or Worksheet 3 and surface diverse perspectives, disagreements and assumptions to test. Triggers include "convene the advisory board", "advisory board review", "what would the board think", "get diverse perspectives on our worksheets", "review our where to play with the advisors", "panel review", "get a second opinion on our map". The board provokes — it never scores or picks a market.
+description: "This skill should be used to convene the experimental Where-to-Play advisory board — a panel of named advisor agents that review the current Worksheet 2 and/or Worksheet 3 and surface diverse perspectives, disagreements and assumptions to test. Triggers include 'convene the advisory board', 'advisory board review', 'what would the board think', 'get diverse perspectives on our worksheets', 'review our where to play with the advisors', 'panel review', 'get a second opinion on our map'. The board provokes — it never scores or picks a market."
 argument-hint: "[ws2 | ws3 | both] [optional: a factor/opportunity to focus on]"
 ---
 
@@ -12,23 +12,23 @@ Convene a panel of advisor agents to review the team's worksheets from many angl
 
 **Step 0 — capability check.** Before anything else, check whether a **`Workflow`** tool is available on this surface:
 
-- **IF `Workflow` is available (Claude Code)** → run the bundled workflow (Path A).
+- **IF `Workflow` is available (Claude Code)** → write and run the board workflow from the blueprint (Path A).
 - **IF `Workflow` is NOT available (Cowork / Agent-SDK and other surfaces)** → run the subagent-orchestrated board (Path B) and tell the team in one plain sentence, without tool names — e.g. *"This environment can't run the larger automated board set-up, so I'll call the advisors individually instead — same review, a bit more step by step."* Never block on the missing tool.
 
 Both paths deliver the same output contract; Path A's consensus tally is schema-validated, Path B's is model-computed.
 
 If the workspace is **empty** (no populated Worksheet 2), stop and advise the team to **fill in Worksheet 2 first** — the board reviews an existing analysis, it does not create one.
 
-### Path A — Workflow (Claude Code)
+### Path A — workflow written from the blueprint (Claude Code)
 
-Run the bundled workflow (ships with the plugin — no install step). Pass a **real object** for `args` (a JSON-encoded string also works):
-```
-Workflow({
-  scriptPath: "${CLAUDE_PLUGIN_ROOT}/workflows/wf-advisory-board.js",
-  args: { worksheet: "<ws2 | ws3 | both>", workspace: "where-to-play", focus: "<optional factor/opportunity>" }
-})
-```
-It digests the worksheets, fans out the board in parallel, and returns the synthesis (consensus tally / agreements / disagreements / top assumptions to test / blind spots). Omitting `args.board` convenes all **five** members (see *The board*); for a subset pass an array of agent ids, e.g. `["where-to-plai:advisor-risk-inverter", "where-to-plai:advisor-tal-gruber"]`.
+The plugin ships the board as a **blueprint**, not as a script: `references/workflow-blueprint.md` fixes the phases, members, prompts and output schemas. You write the workflow script from it and run it.
+
+1. Read `references/workflow-blueprint.md` in full. If the `workflow-authoring` skill is listed, load it for the script API.
+2. Fill the inputs from the team's request (`worksheet`, `workspace`, `focus`, and a subset of members if the team asked for one; otherwise all **five**, see *The board*).
+3. Write the script from the blueprint and run it inline with `Workflow({ script: … })`. Keep the blueprint's phases, members, prompts and schemas as they are; the value of the board comes from that fixed set-up, so don't improvise extra phases or members. Running this workflow is what the team asked for by invoking this skill.
+4. If `Workflow` refuses or the script fails, fix an obvious script error once; otherwise continue with Path B. Either way the team gets its review.
+
+The workflow digests the worksheets, fans out the board in parallel, and returns the synthesis (consensus tally / agreements / disagreements / top assumptions to test / blind spots).
 
 ### Path B — subagent-orchestrated board (Cowork / Agent-SDK fallback)
 

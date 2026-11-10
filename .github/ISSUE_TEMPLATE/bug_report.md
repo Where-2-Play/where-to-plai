@@ -16,8 +16,8 @@ Name the specific piece involved (helps us route it quickly):
 - **Skill / command:** e.g. `where-to-plai:attractiveness-map`
 - **Agent:** e.g. `market-research`, `score-examiner`, a `persona-*` or
   `advisor-*` agent
-- **Workflow / script:** e.g. `wf-market-research.js`, the `worksheet-view`
-  renderer
+- **Workflow:** e.g. the market-research, advisory-board or
+  customer-discovery workflow
 
 ## Steps to reproduce
 

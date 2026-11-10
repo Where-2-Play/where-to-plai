@@ -1,7 +1,7 @@
 ---
 name: opportunity-set
-description: This skill should be used for Worksheet 1 of the Market Opportunity Navigator — generating a Market Opportunity Set. Triggers include "worksheet 1", "market opportunity set", "de-link our abilities", "re-link to applications", "brainstorm markets", "what markets could we serve", "find application and customer combinations", "generate opportunities for our technology", "check / review our opportunity set", "screen our brainstorm", or any request about where-to-play/01_opportunity-set.md. Use it to de-link the venture's core abilities from its product, re-link them into a varied set of application×customer opportunities, and screen down to ≈3–5.
-argument-hint: [optional: the ability or technology to start from]
+description: "This skill should be used for Worksheet 1 of the Market Opportunity Navigator — generating a Market Opportunity Set. Triggers include 'worksheet 1', 'market opportunity set', 'de-link our abilities', 're-link to applications', 'brainstorm markets', 'what markets could we serve', 'find application and customer combinations', 'generate opportunities for our technology', 'check / review our opportunity set', 'screen our brainstorm', or any request about where-to-play/01_opportunity-set.md. Use it to de-link the venture's core abilities from its product, re-link them into a varied set of application×customer opportunities, and screen down to ≈3–5."
+argument-hint: "[optional: the ability or technology to start from]"
 ---
 
 # Worksheet 1 — Market Opportunity Set

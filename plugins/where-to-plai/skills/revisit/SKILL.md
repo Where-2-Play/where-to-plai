@@ -1,7 +1,7 @@
 ---
 name: revisit
-description: This skill should be used to re-open and update an existing Market Opportunity Navigator as new evidence arrives — the longitudinal "breathing" loop. Triggers include "revisit our where to play", "we learned something new", "update the navigator", "re-evaluate our opportunities", "new customer interviews", "should we change our primary market", "our assumptions changed", "breathe the worksheets", "we changed our score", "change the score to", "we decided this factor is now", "delete / clean up the old reasoning", "a competitor just announced". Use it to scan the workspace for new inputs, flag assumptions and scores to revisit, and prompt re-scoring without silently overwriting prior judgement.
-argument-hint: [optional: what changed / new input to consider]
+description: "This skill should be used to re-open and update an existing Market Opportunity Navigator as new evidence arrives — the longitudinal 'breathing' loop. Triggers include 'revisit our where to play', 'we learned something new', 'update the navigator', 're-evaluate our opportunities', 'new customer interviews', 'should we change our primary market', 'our assumptions changed', 'breathe the worksheets', 'we changed our score', 'change the score to', 'we decided this factor is now', 'delete / clean up the old reasoning', 'a competitor just announced'. Use it to scan the workspace for new inputs, flag assumptions and scores to revisit, and prompt re-scoring without silently overwriting prior judgement."
+argument-hint: "[optional: what changed / new input to consider]"
 ---
 
 # Revisit — the breathing loop

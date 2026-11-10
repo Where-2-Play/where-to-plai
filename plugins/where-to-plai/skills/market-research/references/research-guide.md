@@ -44,7 +44,7 @@ The engine returns a **distilled, source-cited summary (~1–2k tokens)**: key f
 |---|---|---|---|
 | 1 | bundled `market-research` **subagent** (Agent tool) | fallback when `Workflow` is absent; any surface | ✅ yes |
 | 2 | built-in `deep-research` **workflow** (`Workflow({name})`) | default for every factor except Market volume / Economic viability, and for broad, open questions; adversarially verified, not WtP-tuned | ❌ Claude Code only |
-| 3 | bundled `wf-market-research` **workflow** (`Workflow({scriptPath})`) | default for *Market volume* and *Economic viability*: factor scoped into sub-questions, every number cross-checked by a 3-lens adversarial panel (source / recency / scope), plus a completeness critic | ❌ Claude Code only |
+| 3 | WtP research **workflow**, written from `references/workflow-blueprint.md` (`Workflow({script})`) | default for *Market volume* and *Economic viability*: factor scoped into sub-questions, every number cross-checked by a 3-lens adversarial panel (source / recency / scope), plus a completeness critic | ❌ Claude Code only |
 
 Rules of thumb:
 - **Capability decides.** If `Workflow` is available, use the workflow tiers; Tier 1 is only the fallback (as in `SKILL.md`).

@@ -43,16 +43,16 @@ Start the guide, which sets up a `where-to-play/` workspace (plus a short worksp
 /where-to-plai:where-to-play
 ```
 
-From there you work the three worksheets — Market Opportunity Set, Attractiveness Map, and Agile Focus Strategy — plus the supporting market-research, revisit, advisory-board, customer-discovery, and worksheet-view commands. The skills are also **auto-activating**: describe your intent in plain language and Claude Code selects the matching step. See [docs/usage.md](docs/usage.md) for the walkthrough and the [plugin README](plugins/where-to-plai/README.md) for the full command list.
+From there you work the three worksheets — Market Opportunity Set, Attractiveness Map, and Agile Focus Strategy — plus the supporting market-research, revisit, advisory-board and customer-discovery commands. The skills are also **auto-activating**: describe your intent in plain language and Claude Code selects the matching step. See [docs/usage.md](docs/usage.md) for the walkthrough and the [plugin README](plugins/where-to-plai/README.md) for the full command list.
 
 ## Documentation map
 
 | Document | Purpose |
 |---|---|
 | [docs/usage.md](docs/usage.md) | Getting started and the day-to-day workflow through the worksheets. |
-| [docs/skills.md](docs/skills.md) | The 9 skills — the guide plus one per worksheet and the supporting steps. |
+| [docs/skills.md](docs/skills.md) | The 8 skills — the guide plus one per worksheet and the supporting steps. |
 | [docs/agents.md](docs/agents.md) | The agent roster: 5 working agents (2 of them experimental personas) and the 4 experimental advisory-board advisors. |
-| [docs/workflows.md](docs/workflows.md) | The three bundled Claude Code workflows (`workflows/wf-*.js`) and the market-research tiers. |
+| [docs/workflows.md](docs/workflows.md) | The three Claude Code workflows (written at run time from Markdown blueprints) and the market-research tiers. |
 | [docs/templates.md](docs/templates.md) | The worksheet templates scaffolded into your project workspace. |
 | [docs/examples.md](docs/examples.md) | The bundled worked examples — Augury, Inergio, Ceal. |
 | [docs/methodology.md](docs/methodology.md) | The Market Opportunity Navigator / Where-to-Play methodology behind the plugin. |
@@ -65,7 +65,7 @@ From there you work the three worksheets — Market Opportunity Set, Attractiven
 ```
 where-to-plai/
 ├── plugins/
-│   └── where-to-plai/      # the installable plugin (skills, agents, workflows, templates, examples)
+│   └── where-to-plai/      # the installable plugin (skills with workflow blueprints, agents, templates, examples)
 ├── docs/                   # repository documentation (this map)
 ├── .github/                # CI (validate-plugin.yml) and issue templates
 ├── .claude-plugin/         # marketplace manifest
@@ -84,4 +84,4 @@ Feedback and bug reports are welcome as [issues](https://github.com/Where-2-Play
 
 ## License
 
-© Sharon Tal & Marc Gruber. Licensed under **[CC BY-NC-SA 4.0](LICENSE)** (SPDX: `CC-BY-NC-SA-4.0`), the same license as the framework on [wheretoplay.co](https://wheretoplay.co/copyrights/). Free to use — also inside companies and in paid teaching or consulting — but not open source: selling the plugin or offering it as a paid product or service needs the authors' permission. Details, including the worksheet view's web-app design and the third-party files (Bootstrap, Open Sans, Jinja2, MarkupSafe): [NOTICE.md](plugins/where-to-plai/NOTICE.md). Plugin engineering by **Jörg Müller** ([co-intelligence.ai](https://www.co-intelligence.ai), GitHub [@codeeater](https://github.com/codeeater)), ghostwriter on behalf of the authors.
+© Sharon Tal & Marc Gruber. Licensed under **[CC BY-NC-SA 4.0](LICENSE)** (SPDX: `CC-BY-NC-SA-4.0`), the same license as the framework on [wheretoplay.co](https://wheretoplay.co/copyrights/). Free to use — also inside companies and in paid teaching or consulting — but not open source: selling the plugin or offering it as a paid product or service needs the authors' permission. Details, including the terms for the Where to Play logo: [NOTICE.md](plugins/where-to-plai/NOTICE.md). Plugin engineering by **Jörg Müller** ([co-intelligence.ai](https://www.co-intelligence.ai), GitHub [@codeeater](https://github.com/codeeater)), ghostwriter on behalf of the authors.

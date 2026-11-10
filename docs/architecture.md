@@ -2,7 +2,7 @@
 
 How the plugin is built and *why* — the decisions that make it a **workspace** for the Market
 Opportunity Navigator rather than a "strategy machine". This page covers the repository layout, how
-skills, agents and workflows are discovered and wired together, the capability-tiered market-research
+skills and agents are discovered and wired together with the workflows, the capability-tiered market-research
 design, what is portable versus Claude-Code-only, and the human-in-the-loop stance that governs all of it.
 
 ## Single-plugin marketplace layout
@@ -20,7 +20,7 @@ The important structural choice is that the plugin lives in the **`plugins/where
 at the repo root**. Only that subfolder is the plugin `source`, so **only it enters the install cache**
 when a user installs. Everything that supports the project but should not travel with the installed
 plugin — `docs/`, the repo-root license files, and community/contribution files — stays **outside the
-installable footprint**. Users get the skills, agents, workflows, templates and worked examples; they do
+installable footprint**. Users get the skills (with the workflow blueprints), agents, templates and worked examples; they do
 not get the documentation tree or repo scaffolding bloating their plugin cache.
 
 ```
@@ -31,10 +31,9 @@ where-to-plai/                   (repo root — github.com/Where-2-Play/where-to
 └── plugins/
     └── where-to-plai/           ← the installable plugin (this subfolder is the cache)
         ├── .claude-plugin/plugin.json
-        ├── README.md · LICENSE · NOTICE.md · PRIVACY.md · licenses/
-        ├── skills/              9 skills
+        ├── README.md · CHANGELOG.md · LICENSE · NOTICE.md · PRIVACY.md
+        ├── skills/              8 skills (3 with a workflow blueprint in references/)
         ├── agents/              9 agents
-        ├── workflows/           3 wf-*.js + README
         └── assets/templates/    worksheet templates + workspace CLAUDE.md scaffolded into a project
 ```
 
@@ -44,30 +43,23 @@ Install: `/plugin marketplace add Where-2-Play/where-to-plai` then
 `/plugin install where-to-plai@where-to-plai`. To test without installing, point Claude Code at the plugin
 folder directly: `claude --plugin-dir /path/to/where-to-plai/plugins/where-to-plai`.
 
-## Auto-discovery: skills, agents, workflows
+## Auto-discovery: skills and agents
 
 The plugin declares **no explicit component lists** in `plugin.json` — the manifest carries only metadata
-(name, version, description, author, links, license, keywords). Components are picked up by **convention-based
+(name, version, description, author, links, license, keywords, and the listing icon `./.claude-plugin/icon.png`). Components are picked up by **convention-based
 auto-discovery** from their directories:
 
-- **`skills/`** — one subfolder per skill, each with a `SKILL.md` (plus optional `references/` and
-  bundled assets, e.g. `worksheet-view/renderer/`). The `SKILL.md` frontmatter `description` is what makes
+- **`skills/`** — one subfolder per skill, each with a `SKILL.md` (plus optional `references/`). The `SKILL.md` frontmatter `description` is what makes
   a skill **auto-activating**: describe intent in plain language ("score this opportunity") and Claude Code
-  matches it, so users don't have to memorize the `/where-to-plai:*` commands. **9 skills** ship — the
+  matches it, so users don't have to memorize the `/where-to-plai:*` commands. **8 skills** ship — the
   `where-to-play` guide, one per worksheet (`opportunity-set`, `attractiveness-map`, `agile-focus`), plus
-  `market-research`, `revisit`, `advisory-board`, `customer-discovery` and `worksheet-view`.
+  `market-research`, `revisit`, `advisory-board` and `customer-discovery`.
 - **`agents/`** — one Markdown file per subagent, discovered by filename. **9 agents** ship: 5 working
   (`opportunity-discovery`, `market-research`, `score-examiner`, and the experimental `persona-optimist`, `persona-skeptic`)
   and 4 experimental advisory-board `advisor-*` agents.
-- **`workflows/`** — `wf-*.js` scripts, auto-discovered and surfaced in the `/` menu. **3 workflows** ship.
 
-The `wf-` prefix on every workflow is a deliberate namespacing choice. In current Claude Code, scripts in
-`workflows/` are auto-discovered and appear as slash commands (e.g. `/where-to-plai:wf-customer-discovery`).
-Several workflows share a purpose — and therefore almost a name — with a skill (`customer-discovery`,
-`advisory-board`, `market-research`). Prefixing each script's `meta.name` with `wf-` keeps the workflow from
-colliding with, and shadowing, the same-named **skill** in the menu. The **skill is the intended entry
-point** — it adds the capability check and writes results into the workspace; the `wf-*` workflow is the raw
-engine the skill calls. See [workflows.md](workflows.md).
+The plugin ships **no workflow scripts**: the three workflows come as Markdown blueprints inside their
+skills (`references/workflow-blueprint.md`); see [workflows.md](workflows.md) for why.
 
 ## Component wiring: skills call agents and workflows
 
@@ -78,10 +70,9 @@ step needs heavier lifting, delegate to agents or workflows:
   (Tier 1) calls `Agent({ subagent_type: "where-to-plai:market-research", … })`, and the working WS1/WS2
   agents (`opportunity-discovery`, `score-examiner`, `persona-*`) run in isolated context and hand back a
   distilled result. See [agents.md](agents.md).
-- **Skill → workflow.** A skill invokes a bundled workflow by **`scriptPath`** resolved inside the installed
-  plugin, so there is **no separate install step**:
-  `Workflow({ scriptPath: "${CLAUDE_PLUGIN_ROOT}/workflows/wf-market-research.js", args: { … } })`. The
-  `advisory-board` and `customer-discovery` skills wire to their `wf-*` counterparts the same way.
+- **Skill → workflow.** The `market-research` (Tier 3), `advisory-board` and `customer-discovery` skills
+  each read their `references/workflow-blueprint.md`, write the workflow script from it, and run it inline
+  with `Workflow({ script: … })`. The blueprint fixes the phases, agents, prompts and output schemas.
 
 ## The capability-tiered market-research design
 
@@ -94,9 +85,9 @@ not by guessing the surface and not by stakes:
 2. **Tier 2 — built-in `deep-research` workflow.** Broad, adversarially-verified web research
    (scope → parallel search → fetch → multi-vote verify → cited synthesis). **Claude Code only.** The
    default for broad/open questions and for the non-quantitative factors.
-3. **Tier 3 — bundled `wf-market-research.js` workflow.** Factor-tuned; scopes into falsifiable
-   sub-questions, then runs a 3-lens adversarial panel on **every number** (source / recency / scope) plus a
-   completeness critic. **Claude Code only**, invoked by `scriptPath` straight from the plugin. Applies to
+3. **Tier 3 — the WtP research workflow, written from the skill's blueprint.** Factor-tuned; scopes into
+   falsifiable sub-questions, then checks **every number** through three lens agents (source / recency /
+   scope) plus a completeness critic. **Claude Code only.** Applies to
    exactly the two quantitative factors — **Market volume** and **Economic viability**.
 
 When `Workflow` is available (Claude Code), the skill defaults to Tier 3 for the two quantitative factors and
@@ -105,24 +96,21 @@ Tier 2 for everything else; the `--wtp` / `--deep` flags let the team override e
 Tier 1 too, and the skill tells the team in one plain sentence, without tool names. Whatever the tier, the
 output is the same shape: findings with their sources and a 🔴/🟠/🟢 evidence colour per claim, plus an
 open-questions list; the factor-level confidence colour stays the team's call. **The plugin never hard-depends on a Claude-Code-only feature.** The
-`advisory-board` skill applies the same detect-and-degrade pattern: use the workflow when present, otherwise
-spawn the advisor agents directly.
+`advisory-board` and `customer-discovery` skills apply the same detect-and-degrade pattern: use the workflow
+when present, otherwise spawn subagents directly (customer discovery can also role-play the interviews in-skill).
 
 ## Portability: what runs where
 
 | Component | Runs on any Agent Skills surface | Claude-Code-only |
 |---|---|---|
-| Skills (9) | ✅ | |
+| Skills (8) | ✅ | |
 | Agents (9) | ✅ | |
-| Bundled `workflows/*.js` (3) | | ✅ (need the `Workflow` tool) |
+| Workflows (3, written from blueprints) | | ✅ (need the `Workflow` tool) |
 | `deep-research` tier | | ✅ |
-| `worksheet-view` rendering | ✅ (bundled Python `render.py`; plain `python3`, Jinja2 bundled, nothing to install) | |
 
 **Skills and agents are portable** — they are plain Markdown and run wherever the Agent Skills spec is
-supported. **Only the three bundled `wf-*.js` workflows and the `deep-research` tier are Claude-Code-only**,
-and every skill that uses them degrades gracefully where they are absent. `worksheet-view` renders through a
-bundled Python script (`skills/worksheet-view/renderer/render.py`) rather than a hosted service, keeping the
-visual output self-contained.
+supported. **Only the three workflows and the `deep-research` tier are Claude-Code-only**,
+and every skill that uses them degrades gracefully where they are absent.
 
 ## Human-in-the-loop: the governing stance
 
@@ -151,6 +139,6 @@ cornerstone questions and gathers evidence; **the team makes every real decision
 
 ## See also
 
-- [workflows.md](workflows.md) — the three bundled workflows and the capability-tiered research engine
-- [skills.md](skills.md) — the nine skills and how they orchestrate a session
+- [workflows.md](workflows.md) — the three workflows (shipped as blueprints) and the capability-tiered research engine
+- [skills.md](skills.md) — the eight skills and how they orchestrate a session
 - [agents.md](agents.md) — the working agents and the experimental advisory board

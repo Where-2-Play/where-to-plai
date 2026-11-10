@@ -1,42 +1,39 @@
 # Workflows
 
-The plugin bundles three **Claude Code Workflow scripts** — `workflows/wf-*.js` — that
-orchestrate multi-agent runs the plain skills cannot: parallel fan-out, per-agent structured
-schemas, and deterministic post-processing. They live under
-[`plugins/where-to-plai/workflows/`](../plugins/where-to-plai/workflows/) and ship inside the
-installed plugin, so a skill can invoke one straight from disk with no separate install step.
+Three skills orchestrate multi-agent runs that plain skills cannot: parallel fan-out, per-agent
+structured schemas, and fixed post-processing rules (de-duplication, caps, the majority rule). In Claude Code they do this with the
+`Workflow` tool.
+
+> **Why there are no workflow scripts in the plugin.** Anthropic's plugin directory currently
+> accepts workflow scripts (`workflows/*.js`) only from Verified organizations, so we removed
+> the three pre-built scripts. Each workflow now ships as a **blueprint** instead: a Markdown page
+> in the skill's `references/workflow-blueprint.md` that fixes the phases, agents, prompts and
+> output schemas. When the skill needs the workflow, Claude writes the script from the blueprint
+> and runs it in the session. We are working on bringing the pre-built scripts back.
 
 A workflow is never the entry point. The **skill** is: it runs the capability check, briefs the
-right question, and writes the result into the `where-to-play/` workspace. The `wf-*` file is the
-raw engine the skill calls. This split is also why the scripts carry the `wf-` prefix — Claude
-Code auto-discovers everything in `workflows/` into the `/` menu, so `wf-customer-discovery`
-avoids colliding with the same-purpose `customer-discovery` **skill** (without the prefix the
-workflow would shadow the skill).
+right question, writes and runs the workflow, and writes the result into the `where-to-play/`
+workspace.
 
-## How a skill invokes a workflow
+## How a skill runs a workflow
 
-All three are called through the Claude Code `Workflow` tool, pointed at the bundled file by
-`scriptPath` (which resolves inside the installed plugin via `${CLAUDE_PLUGIN_ROOT}`):
+1. The skill reads its `references/workflow-blueprint.md` (and, where available, Claude Code's
+   `workflow-authoring` skill for the script API).
+2. It fills the blueprint's inputs from the team's request and the worksheets.
+3. It writes the script and runs it inline with `Workflow({ script: … })`, keeping the blueprint's
+   phases, agents, prompts and schemas as they are.
+4. If `Workflow` is missing, refuses or fails, the skill falls back (market research: to Tier 2,
+   then to the Tier 1 subagent; the other two: to their Path B, see below), so the team always gets
+   a result.
 
-```
-Workflow({
-  scriptPath: "${CLAUDE_PLUGIN_ROOT}/workflows/wf-<name>.js",
-  args: { ... }
-})
-```
+A script written at run time is less deterministic than a pre-built one: the phases and prompts
+are fixed by the blueprint, but the code around them is new each time.
 
-`wf-advisory-board` and `wf-customer-discovery` parse `args` defensively: they accept either a
-real object or a JSON-encoded string, so a caller that stringifies its arguments does not silently
-fall back to defaults and lose context like `workspace` or `value_prop`. `wf-market-research`
-treats any string as a free-form question, so pass it a real object when you want `opportunity`
-and `factor` to count. Every script `return`s a structured result object the skill then formats
-and writes to the workspace.
-
-## `wf-market-research`
+## Market research (Tier 3)
 
 WtP-tuned deep research for a **Worksheet 2 factor** — the evidence engine behind the
 Attractiveness Map. It gathers and cross-checks market evidence but **never assigns a score**; the
-team scores. A shared `WTP_FRAMING` block is prepended to every agent prompt so each stays
+team scores. A shared framing block is prepended to every agent prompt so each stays
 on-method (evidence only, sourced fact vs. inference, the red/orange/green confidence scale).
 
 Five phases:
@@ -48,10 +45,10 @@ Five phases:
 2. **Search** — one search agent per sub-question, **in parallel**, each searching breadth-first
    then fetching credible primary sources, dating every figure, and returning findings with
    sources, a confidence flag, and an `is_quantitative` flag.
-3. **Verify** — the quantitative claims are de-duplicated and capped (at 12), then each is put
-   through a **perspective-diverse three-lens adversarial panel**: a *source-credibility* lens, a
-   *recency/validity* lens, and a *scope-match* lens, run in parallel. A figure that fails the
-   majority of its lenses has its confidence downgraded a notch (green→orange, orange→red) and
+3. **Verify** — the quantitative claims are de-duplicated and capped (at 12), then checked by
+   three **different lens agents** in parallel: a *source-credibility* lens, a *recency/validity*
+   lens, and a *scope-match* lens, each judging every claim. A figure that fails the majority of
+   its lenses has its confidence downgraded a notch (green→orange, orange→red) and
    carries the concerns forward. Three *different* lenses, not N identical refuters, because a
    market number can be wrong in three distinct ways.
 4. **Synthesize** — a high-effort agent merges semantic duplicates, drops the unsupported and
@@ -63,13 +60,12 @@ Five phases:
 
 Invoked by the **[`market-research`](skills.md)** skill as **Tier 3** — see the tier model below.
 
-## `wf-advisory-board`
+## Advisory board
 
 Convenes the experimental "Framework plus" advisory board over the team's **Worksheet 2 and/or
 Worksheet 3**. The board *provokes* — it surfaces agreements, disagreements and assumptions to
-test — but **never scores or picks a market**. `args` selects the worksheet (`ws2` / `ws3` /
-`both`), the `workspace` path, an optional `focus`, and an optional `board` (an array of agent
-ids) to convene a subset of the five members.
+test — but **never scores or picks a market**. Its inputs are the worksheet (`ws2` / `ws3` /
+`both`), the `workspace` path, an optional `focus`, and optionally a subset of the five members.
 
 Three phases:
 
@@ -83,7 +79,7 @@ Three phases:
    board is five members, each labelled "Name — lens": Tal & Gruber — method fidelity,
    Score Examiner — evidence check (`score-examiner`), Jobs Analyst — jobs to be done /
    disruption, Beachhead Strategist — beachhead / whole product, Risk Inverter — inversion / risk.
-   `args.board` convenes a subset; the synthesis names members by the same labels. The thinker
+   A subset can be convened on request; the synthesis names members by the same labels. The thinker
    lenses are anonymous experts; none is presented as a real person.
 3. **Synthesis** — a high-effort chair agent merges semantically-equivalent findings into a
    **consensus tally** (how many *distinct* advisors independently raised each concern — a
@@ -96,13 +92,13 @@ across separate lenses carries weight because none saw the others' answers.
 
 Invoked by the **[`advisory-board`](skills.md)** skill (Path A).
 
-## `wf-customer-discovery`
+## Customer discovery
 
 Runs **synthetic, skeptical customer discovery** for a Worksheet 2 opportunity and proposes a
 **DRAFT score for Factor 1 (Compelling reason to buy)**. Explicitly synthetic and directional — a
 provisional draft to prep real interviews, never a substitute for getting out of the building.
-`args` carries the `opportunity` (a bare string is treated as the opportunity), plus optional
-`application`, `customer`, `value_prop`, `workspace` and `factor`.
+Its inputs are the `opportunity`, plus optional `application`, `customer`, `value_prop` and
+`workspace`.
 
 Three phases:
 
@@ -136,10 +132,10 @@ fact, not stakes or surface guesswork, picks the engine. On a fallback the skill
 one plain sentence, without tool names. The plugin never hard-depends on a Claude-Code-only
 feature.
 
-- **`advisory-board`** — Path A runs `wf-advisory-board`; **Path B** reproduces the *same output
+- **`advisory-board`** — Path A runs the board workflow; **Path B** reproduces the *same output
   contract* by spawning the advisor agents directly as subagents (a model-computed tally instead
   of the workflow's schema-validated one).
-- **`customer-discovery`** — Path A runs `wf-customer-discovery`; **Path B** reproduces the same
+- **`customer-discovery`** — Path A runs the discovery workflow; **Path B** reproduces the same
   flow without the workflow: personas are derived in-skill and interviewed as subagents where
   supported, otherwise role-played one after another in-skill. Shared-context role-play gives
   less persona independence and is treated as lower rigor.
@@ -157,11 +153,9 @@ The `market-research` skill picks its engine by capability, then by factor:
    **Claude Code only**. The default for broad/open questions and for the factors that are not
    number-heavy (Time to revenues, Implementation obstacles, External risks, competitor landscape,
    general context). Called with a single **string** prompt.
-3. **Tier 3 — bundled `wf-market-research` workflow.** Factor-tuned, cross-checks every number
-   across the three-lens panel, **Claude Code only**, invoked by `scriptPath` straight from the
-   plugin. It applies to **exactly two factors — Market volume and Economic viability**. Called
-   with a **structured object** (`opportunity` / `factor` / `constraints`) — the two workflows take
-   different `args` shapes by design and must not be normalised to one another.
+3. **Tier 3 — the WtP research workflow.** Factor-tuned, cross-checks every number through the
+   three lenses, **Claude Code only**, written by Claude from the skill's blueprint. It applies to
+   **exactly two factors — Market volume and Economic viability**.
 
 When `Workflow` is available the skill defaults to Tier 3 for the two quantitative factors and
 Tier 2 otherwise; the `--wtp` flag forces Tier 3 and `--deep` forces Tier 2 (both require
@@ -170,6 +164,6 @@ Tier 1 automatically — a missing tool never blocks the research.
 
 ## See also
 
-- [skills.md](skills.md) — the skills that invoke these workflows and the entry points
+- [skills.md](skills.md) — the skills that run these workflows and the entry points
 - [agents.md](agents.md) — the subagents the workflows and fallbacks fan out to
 - [architecture.md](architecture.md) — the capability model and how the pieces fit together

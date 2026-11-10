@@ -29,7 +29,7 @@ Where does this fit in the Market Opportunity Navigator?
 - [ ] Worksheet 2 — Attractiveness Map
 - [ ] Worksheet 3 — Agile Focus Strategy
 - [ ] The longitudinal "breathing" loop (revisit)
-- [ ] Cross-cutting / tooling (rendering, workflows, docs)
+- [ ] Cross-cutting / tooling (workflows, docs)
 
 ## Alternatives considered
 

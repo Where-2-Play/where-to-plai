@@ -2,7 +2,7 @@
 
 A full walkthrough of a Where-to-Play run — the "sit down and actually do it" guide, beyond the
 command table in the plugin [README](../plugins/where-to-plai/README.md). It follows one venture
-through all three worksheets, then into the breathing loop, the visual render, and shared-file
+through all three worksheets, then into the breathing loop and shared-file
 teamwork.
 
 This plugin **is not a strategy machine.** At every real decision — which opportunities enter your
@@ -71,7 +71,6 @@ language and Claude Code selects the matching step:
 - "which market should be our primary" → `agile-focus` (Worksheet 3)
 - "how big is this market" / "research the competition" → `market-research`
 - "we learned something new, update the navigator" → `revisit`
-- "visualize the worksheets like the web app" → `worksheet-view`
 
 The explicit commands are useful when you know exactly which step you want; natural language is
 better when you are mid-conversation and just describing what you need. Both routes land on the same
@@ -177,8 +176,8 @@ Worksheet 2 is where evidence matters most, so the skill offers several helpers 
 - **`market-research`** — when a factor rests on missing market facts (market volume, competition,
   TAM/SAM/SOM, economic viability), invoke it for **cited evidence that flags its own uncertainty**
   rather than bluffing. Each claim carries its source and an evidence colour; the factor-level
-  confidence colour stays your team's call. It picks a research engine by capability; on Claude Code it can use the
-  factor-tuned `wf-market-research` workflow that cross-checks every number across multiple sources.
+  confidence colour stays your team's call. It picks a research engine by capability; on Claude Code it can run the
+  factor-tuned WtP research workflow, written from the skill's blueprint, that checks every number through three lenses (source, recency, scope match).
   See [workflows.md](workflows.md) for the three research tiers.
 - **`customer-discovery`** — for **Factor 1 (Compelling reason to buy)**, which is judged through the
   customer's eyes rather than by desk research. It derives diverse, skeptical, web-grounded personas
@@ -271,27 +270,11 @@ The `revisit` skill:
 A confirmed *or* refuted assumption is progress either way. "Not attractive anymore" is a valid,
 valuable update — learning it now, before more sweat, tears and money, is a win.
 
-## Rendering — `worksheet-view`
+## Worksheet view — temporarily removed
 
-To present the filled Navigator, render it as a visual page set in the *exact visual language of the
-Where-to-Play web app*:
-
-```
-/where-to-plai:worksheet-view
-```
-
-The `worksheet-view` skill is **presentation, not editing.** It is a one-way, read-only mirror: it
-reads your `where-to-play/*.md` files, compacts them faithfully into a `wtp-data.json` (shortening
-your own words to fit the app's fixed slots, never adding claims), and runs a deterministic Python
-renderer to produce a small **`where-to-play/navigator/` folder** with four cross-linked pages —
-**Overview / Worksheet 1 / Worksheet 2 / Worksheet 3**, including the map and the dartboard. The
-pages are self-contained: open `navigator/overview.html` by double-click, no server, no network.
-
-Because it never writes back to the worksheets, the `.md` files stay the **single source of truth**
-and your team stays in the loop. Unfilled fields render as the app's faint placeholders, not as
-guesses. Worksheet 1 shows the full application → segment → sub-segment tree with each leaf's
-status; Worksheet 3 shows the Primary once. Rendering uses a bundled Python script that runs with
-plain Python 3.9 or newer and installs nothing: its one dependency, Jinja2, ships with the plugin.
+Anthropic's plugin directory currently doesn't accept the files the worksheet view needs (its Python
+renderer, templates, styles and fonts), so we took it out for now. It rendered the filled worksheets as
+web pages in the look of the Where-to-Play web app. We're working on bringing it back.
 
 ## Team collaboration through shared git files
 

@@ -22,9 +22,9 @@ The board has five members. Always label members as "Name — lens".
 
 ## Choosing members
 
-All ids carry the `where-to-plai:` prefix; the evidence lens is **`score-examiner`**, which does **not** carry the `advisor-` prefix. Omitting `args.board` convenes all five; pass an array of ids to convene a subset.
+All ids carry the `where-to-plai:` prefix; the evidence lens is **`score-examiner`**, which does **not** carry the `advisor-` prefix. By default the board has all five members; if the team asks for a subset, convene only those ids.
 
-Example — a three-member board: `args.board: ["where-to-plai:advisor-tal-gruber", "where-to-plai:advisor-risk-inverter", "where-to-plai:score-examiner"]`.
+Example — a three-member board: `where-to-plai:advisor-tal-gruber`, `where-to-plai:advisor-risk-inverter`, `where-to-plai:score-examiner`.
 
 ## The diverge / focus lenses
 

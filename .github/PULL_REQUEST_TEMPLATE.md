@@ -6,9 +6,8 @@ Briefly describe the change and the motivation (the "why").
 
 - [ ] Skill(s)
 - [ ] Agent(s)
-- [ ] Command / workflow (`wf-*.js`)
+- [ ] Workflow blueprint (`references/workflow-blueprint.md`)
 - [ ] Template(s) or worked example(s)
-- [ ] Renderer (`worksheet-view`)
 - [ ] Docs / README
 - [ ] Repo tooling / CI
 
@@ -17,8 +16,8 @@ Briefly describe the change and the motivation (the "why").
 - [ ] We agreed on this change in an issue first: #
 - [ ] Ran the local checks in docs/development.md and/or the **Validate
       plugin** CI is green; tested with `claude --plugin-dir plugins/where-to-plai`.
-- [ ] Skill/agent frontmatter is intact; any new workflow script passes
-      the syntax check (CI step, or check 5 in docs/development.md).
+- [ ] Skill/agent frontmatter is intact, and every file in the plugin folder
+      follows the directory's file rules (the **Directory file policy** CI step).
 - [ ] Updated `plugins/where-to-plai/CHANGELOG.md` and bumped the version in
       `.claude-plugin/marketplace.json` **and**
       `plugins/where-to-plai/.claude-plugin/plugin.json` if this is a

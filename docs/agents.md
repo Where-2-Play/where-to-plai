@@ -63,8 +63,8 @@ confidence colour (the team sets both); never launders an estimate into a fact, 
 reports synthetic-persona output as research.
 
 > The `market-research` *skill* uses this agent as its portable fallback (Tier 1). Where the
-> `Workflow` tool exists, it runs Claude Code's built-in `deep-research` workflow, or the bundled
-> `wf-market-research` for Market volume and Economic viability. See [workflows.md](workflows.md).
+> `Workflow` tool exists, it runs Claude Code's built-in `deep-research` workflow, or the WtP research
+> workflow (written from the skill's blueprint) for Market volume and Economic viability. See [workflows.md](workflows.md).
 
 ### `score-examiner`
 
@@ -136,7 +136,7 @@ endorsement.
 
 **How the board is convened.** Use the [`advisory-board` skill](skills.md) (or the
 `/where-to-plai:advisory-board` command). On Claude Code it runs the
-[`wf-advisory-board` workflow](workflows.md): an intake agent digests the worksheets, each
+[board workflow](workflows.md), written from the skill's blueprint: an intake agent digests the worksheets, each
 board member reviews through its lens in parallel, and a synthesis surfaces agreements,
 disagreements, and the assumptions to test. **The board provokes — it never scores or picks
 a market.**
@@ -146,7 +146,7 @@ fidelity, Score Examiner — evidence check, Jobs Analyst — jobs to be done / 
 Beachhead Strategist — beachhead / whole product, Risk Inverter — inversion / risk. The team
 can convene a subset by naming members.
 
-Every advisor is read-only (`tools: ["Read"]`, `model: inherit`) and reads the relevant
+Every advisor is read-only (`tools: Read`, `model: inherit`) and reads the relevant
 files under `where-to-play/`. Each returns a short, voiced take ending with the assumptions,
 tests, or reconnaissance its perspective demands, and each closes on the same boundary: *one
 voice among many — you counsel, the team decides; never assign a factor score or pick the
@@ -168,5 +168,5 @@ mode when generating options (Worksheet 1) and its `focus` mode when narrowing
 ## See also
 
 - [skills.md](skills.md) — the skills that spawn these agents and gate each worksheet step.
-- [workflows.md](workflows.md) — the three bundled Claude-Code workflows (`wf-market-research`,
-  `wf-customer-discovery`, `wf-advisory-board`) that orchestrate agents into multi-step passes.
+- [workflows.md](workflows.md) — the three Claude Code workflows (market research, customer
+  discovery, advisory board), shipped as blueprints, that orchestrate agents into multi-step passes.

@@ -2,7 +2,7 @@
 
 How the plugin is built, checked and released. For maintainers, and for anyone preparing a pull request after agreeing on it in an issue (see [CONTRIBUTING.md](../CONTRIBUTING.md)).
 
-Most of the "code" here is Markdown — skills, agents, references and templates — plus three Claude Code workflow scripts and the worksheet view's small Python renderer.
+All of the plugin's "code" is Markdown — skills, agents, references, templates and the workflow blueprints — plus the JSON manifest and an icon. The repo adds one Python CI script (`.github/scripts/check_directory_policy.py`).
 
 ## The philosophy every change has to respect
 
@@ -21,9 +21,8 @@ where-to-plai/
 ├── .claude-plugin/marketplace.json   # single-plugin marketplace manifest
 ├── plugins/where-to-plai/            # the installable plugin
 │   ├── .claude-plugin/plugin.json    # plugin manifest (name, version, license…)
-│   ├── skills/<skill>/SKILL.md       # + references/ per skill
+│   ├── skills/<skill>/SKILL.md       # + references/ per skill (incl. workflow-blueprint.md)
 │   ├── agents/<agent>.md             # working + experimental agents
-│   ├── workflows/wf-*.js             # Claude-Code-only workflow scripts
 │   ├── assets/templates/             # worksheet files scaffolded into a project
 │   └── README.md                     # plugin overview / voice reference
 ├── docs/                             # deep-dive docs, incl. this file
@@ -51,10 +50,12 @@ skills/<skill-name>/
 ```yaml
 ---
 name: attractiveness-map
-description: This skill should be used for Worksheet 2 of the Market Opportunity Navigator — … Triggers include "worksheet 2", "attractiveness map", "score this opportunity", … Use it to …
-argument-hint: [optional: the opportunity to evaluate]
+description: "This skill should be used for Worksheet 2 of the Market Opportunity Navigator — … Triggers include 'worksheet 2', 'attractiveness map', 'score this opportunity', … Use it to …"
+argument-hint: "[optional: the opportunity to evaluate]"
 ---
 ```
+
+Put `description` and `argument-hint` in double quotes, with single quotes for trigger phrases inside; the directory refuses unquoted values that hold a colon, `#`, bracket or quote.
 
 - **`name`** — kebab-case, matches the folder name.
 - **`description`** — third-person ("This skill should be used to…"), and it carries the **trigger phrases** in the user's own words. These are what make the skill auto-activate, so invest in them. Add a `Use it to …` clause that states what the skill actually does.
@@ -79,9 +80,11 @@ description: |
   </example>
 model: inherit
 color: red
-tools: ["Read"]
+tools: Read
 ---
 ```
+
+`tools` is a comma-separated string, e.g. `tools: Read, Glob`.
 
 Two rules specific to this repo:
 
@@ -90,7 +93,7 @@ Two rules specific to this repo:
 
 ## Running the validation locally
 
-CI (`.github/workflows/validate-plugin.yml`) runs a set of `jq`/`node` checks on every push to `main` and `next` and on pull requests to `main`. You can run the same checks locally before pushing — they need only `jq` and `node`, both preinstalled on the CI runner. From the repo root:
+CI (`.github/workflows/validate-plugin.yml`) runs a set of `jq` checks on every push to `main` and `next` and on pull requests to `main`. You can run the same checks locally before pushing — they need only `jq`, preinstalled on the CI runner. From the repo root:
 
 ```bash
 # 1) marketplace.json — valid JSON + required fields + array of plugins
@@ -120,19 +123,14 @@ find plugins -name SKILL.md -exec sh -c '
 # 4) every agent file — opens with frontmatter
 find plugins -path '*/agents/*.md' -exec sh -c \
   'head -n1 "$1" | grep -q "^---$" || echo "✗ $1: no frontmatter"' _ {} \;
-
-# 5) every workflow script — syntax-checks with node (wrapped in an async
-#    function, the way the Workflow tool runs it)
-find plugins -path '*/workflows/*.js' -exec sh -c \
-  '{ echo "(async () => {"; sed "s/^export const meta/const meta/" "$1"; echo "})"; } > /tmp/wf-check.js && node --check /tmp/wf-check.js || echo "✗ $1"' _ {} \;
 ```
 
 If any line prints a `✗` or a non-zero exit, fix it before pushing — CI fails on the same check.
 
-CI also runs three more jobs:
+CI also runs these checks:
 
 - **Anthropic directory check** installs a pinned Claude Code CLI and runs `claude plugin validate plugins/where-to-plai --profile directory --strict`, the local subset of the directory's own checks (no login needed). Run it locally the same way before merging to `main`; raise the pinned `CLAUDE_CODE_VERSION` in the workflow now and then.
-- **Worksheet view renders** runs `render.py` on `wtp-data.example.json` under Python 3.9 and 3.13 with nothing installed, and checks that all four pages, both stylesheets, the fonts and the assets come out.
+- **Directory file policy** — every file in the plugin folder must be Markdown, text, JSON, YAML or a PNG/JPEG/GIF/WebP/ICO image, none may start with `#!`, and frontmatter values in skills and agents must be plain text, with any value holding a colon, `#`, bracket or quote in double quotes (the rules Anthropic's directory applies to community plugins). Run it locally with `python3 .github/scripts/check_directory_policy.py plugins/where-to-plai` (needs PyYAML).
 - **Versions consistent** checks that `plugin.json` and `marketplace.json` carry the same version, that the CHANGELOG has a section for it, that both READMEs' status lines name it, and, on a `vX.Y.Z` tag, that the tag matches.
 
 ## Testing locally in Claude Code
@@ -143,7 +141,7 @@ Load the plugin straight from your working tree, no install step:
 claude --plugin-dir /path/to/where-to-plai/plugins/where-to-plai
 ```
 
-Then exercise what you changed — for example `/where-to-plai:where-to-play` to set up a `where-to-play/` workspace, `/where-to-plai:attractiveness-map` for a scoring pass, or the plain-language triggers (auto-activation) if you touched a skill's `description`. If you edited a workflow (`workflows/wf-*.js`), run the skill that invokes it in Claude Code, since those are Claude-Code-only and won't run on other surfaces.
+Then exercise what you changed — for example `/where-to-plai:where-to-play` to set up a `where-to-play/` workspace, `/where-to-plai:attractiveness-map` for a scoring pass, or the plain-language triggers (auto-activation) if you touched a skill's `description`. If you edited a workflow blueprint (`references/workflow-blueprint.md`), run the skill that uses it in Claude Code, since workflows are Claude-Code-only and won't run on other surfaces.
 
 ## Commits, versioning and releases
 

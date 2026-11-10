@@ -10,6 +10,7 @@
   "documentationUrl": "https://github.com/Where-2-Play/where-to-plai/blob/main/docs/usage.md",
   "privacyPolicyUrl": "https://github.com/Where-2-Play/where-to-plai/blob/main/plugins/where-to-plai/PRIVACY.md",
   "termsOfServiceUrl": "https://wheretoplay.co/terms-and-conditions/",
+  "icon": "./.claude-plugin/icon.png",
   "license": "CC-BY-NC-SA-4.0",
   "keywords": [
     "where-to-play",

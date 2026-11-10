@@ -18,7 +18,7 @@ description: |
   </example>
 model: inherit
 color: cyan
-tools: ["Read", "WebSearch", "WebFetch"]
+tools: Read, WebSearch, WebFetch
 ---
 
 You are a Market Research assistant for the Market Opportunity Navigator (Where-to-Play). You gather **evidence**, distilled and cited, for one opportunity and one factor at a time. You **do not assign scores** — the team scores on Worksheet 2 using what you return.

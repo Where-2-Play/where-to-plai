@@ -1,7 +1,7 @@
 ---
 name: customer-discovery
-description: This skill should be used to run synthetic customer interviews and draft a "Compelling reason to buy" score for Worksheet 2 of the Market Opportunity Navigator. Triggers include "synthetic customer interviews", "draft a compelling-reason-to-buy score", "simulate customer feedback for this opportunity", "customer discovery for worksheet 2", "what would customers think of this opportunity", "interview synthetic personas about our offer". It derives diverse, web-grounded, skeptical personas, role-plays an interview with each, and returns a PRELIMINARY draft score plus assumptions and a real-interview kit — directional only, never a substitute for getting out of the building.
-argument-hint: <opportunity> [value-prop]
+description: "This skill should be used to run synthetic customer interviews and draft a 'Compelling reason to buy' score for Worksheet 2 of the Market Opportunity Navigator. Triggers include 'synthetic customer interviews', 'draft a compelling-reason-to-buy score', 'simulate customer feedback for this opportunity', 'customer discovery for worksheet 2', 'what would customers think of this opportunity', 'interview synthetic personas about our offer'. It derives diverse, web-grounded, skeptical personas, role-plays an interview with each, and returns a PRELIMINARY draft score plus assumptions and a real-interview kit — directional only, never a substitute for getting out of the building."
+argument-hint: "<opportunity> [value-prop]"
 ---
 
 # Customer Discovery (experimental — "Framework plus")
@@ -14,20 +14,20 @@ The skill **does output a draft score** (Low / Mid / High / Super High) and a pr
 
 ## How to run it — detect the engine first
 
-**Step 0 — capability check.** Before anything else, check whether a **`Workflow`** tool is available on this surface. **IF yes (Claude Code)** → run the bundled workflow (Path A). **IF not (Cowork / Agent-SDK and other surfaces)** → run the in-skill fallback (Path B). Never block on the missing tool.
+**Step 0 — capability check.** Before anything else, check whether a **`Workflow`** tool is available on this surface. **IF yes (Claude Code)** → write and run the discovery workflow from the blueprint (Path A). **IF not (Cowork / Agent-SDK and other surfaces)** → run the in-skill fallback (Path B). Never block on the missing tool.
 
 **What the team hears.** On Path B, say so in one plain sentence without tool names — e.g. *"This environment can't run the larger automated interview set-up, so I'll run the persona interviews myself, one after another — same goal, a bit more step by step."* Throughout, keep the machinery out of what you tell the team: no agents, subagents, runs, workflows, tools or what went wrong inside them — talk about personas, interviews and findings. If something failed, say only what it means for the result (e.g. "one persona is missing, so the picture is thinner").
 
-### Path A — Workflow (Claude Code)
+### Path A — workflow written from the blueprint (Claude Code)
 
-Call the bundled workflow (ships with the plugin — no install step):
-```
-Workflow({
-  scriptPath: "${CLAUDE_PLUGIN_ROOT}/workflows/wf-customer-discovery.js",
-  args: { opportunity: "<name/description>", value_prop: "<the compelling reason claimed>", workspace: "where-to-play" }
-})
-```
-Optional args: `application`, `customer`, `factor`. The workflow: (1) one grounded agent derives 4–6 **diverse** personas via web search — the **economic buyer separate from the user**, and a **skeptic, an incumbent-loyalist and a laggard**, not only the eager early adopter; (2) one agent **per persona** role-plays a realistic, **non-sycophantic** interview (real objections, status-quo inertia, "I already have a solution", budget reality); (3) one synthesis agent returns a **draft score**, an **honest, proposed red/orange/green confidence**, **rationale**, **key assumptions**, a **Mom-Test interview kit** and a **SYNTHETIC / directional-only** note.
+The plugin ships the interview set-up as a **blueprint**, not as a script: `references/workflow-blueprint.md` fixes the phases, prompts and output schemas. You write the workflow script from it and run it.
+
+1. Read `references/workflow-blueprint.md` in full. If the `workflow-authoring` skill is listed, load it for the script API.
+2. Fill the inputs (`opportunity`, and where known `application`, `customer`, `value_prop`) from the team's request and the worksheets.
+3. Write the script from the blueprint and run it inline with `Workflow({ script: … })`. Keep the blueprint's phases, prompts and schemas as they are; the anti-sycophancy wording and the persona spread are what make the draft usable, so don't soften or shorten them. Running this workflow is what the team asked for by invoking this skill.
+4. If `Workflow` refuses or the script fails, fix an obvious script error once; otherwise continue with Path B.
+
+The workflow: (1) one grounded agent derives 4–6 **diverse** personas via web search — the **economic buyer separate from the user**, and a **skeptic, an incumbent-loyalist and a laggard**, not only the eager early adopter; (2) one agent **per persona** role-plays a realistic, **non-sycophantic** interview (real objections, status-quo inertia, "I already have a solution", budget reality); (3) one synthesis agent returns a **draft score**, an **honest, proposed red/orange/green confidence**, **rationale**, **key assumptions**, a **Mom-Test interview kit** and a **SYNTHETIC / directional-only** note.
 
 ### Path B — in-skill fallback (Cowork / Agent-SDK)
 

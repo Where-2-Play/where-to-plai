@@ -48,7 +48,6 @@ Then work the worksheets:
 | `/where-to-plai:revisit` | re-open the worksheets as new evidence arrives (the "breathing" loop) |
 | `/where-to-plai:advisory-board` | convene the advisor panel to review WS2/WS3 (experimental) |
 | `/where-to-plai:customer-discovery` | draft a "Compelling reason to buy" score from synthetic, skeptical customer interviews (experimental) |
-| `/where-to-plai:worksheet-view` | render the worksheets as visual web pages (Overview, WS1, WS2, WS3) |
 
 The skills are also **auto-activating**: describe your intent in plain language ("help us pick a market", "score this opportunity") and Claude Code selects the matching step — you don't have to memorize the commands.
 
@@ -59,12 +58,11 @@ Type these in plain language; the matching skill starts on its own.
 - *"Guide us through where to play. We build a low-power vibration sensor for industrial machines."* — starts the guided process and sets up the workspace.
 - *"Research this market: how big is the market for predictive maintenance in mid-sized food plants in Germany? We need evidence for market volume."* — runs cited market research for a Worksheet 2 factor.
 - *"Score this opportunity on the attractiveness map: predictive maintenance for wind-turbine operators."* — walks the six factors of Worksheet 2 with you.
-- *"Render the navigator so we can show our worksheets in Monday's meeting."* — builds the worksheet view as web pages.
 - *"We learned something new from three customer interviews. Revisit our where to play."* — re-opens the worksheets with the new evidence.
 
 ## Components
 
-- **9 skills** — the guide (`where-to-play`) plus one per worksheet (`opportunity-set`, `attractiveness-map`, `agile-focus`), and `market-research`, `revisit`, `advisory-board`, `customer-discovery`, `worksheet-view`.
+- **8 skills** — the guide (`where-to-play`) plus one per worksheet (`opportunity-set`, `attractiveness-map`, `agile-focus`), and `market-research`, `revisit`, `advisory-board`, `customer-discovery`.
 - **Working agents (5)** —
   - `opportunity-discovery` — WS1 breadth-first idea generation as an application → segment tree,
   - `market-research` — WS2 cited evidence with an evidence colour per claim, flags uncertainty,
@@ -73,7 +71,7 @@ Type these in plain language; the matching skill starts on its own.
 - **Advisory board (4 advisor agents, experimental "Framework plus")** — three anonymous expert lenses named by their function, each applying an established school of thinking (Jobs Analyst, Beachhead Strategist, Risk Inverter), plus a **Tal & Gruber** duo (with diverge/focus lenses). Convened by the `advisory-board` skill: a board of five, each labelled by its lens — Tal & Gruber (method fidelity), Score Examiner (evidence check), Jobs Analyst (jobs to be done / disruption), Beachhead Strategist (beachhead / whole product), Risk Inverter (inversion / risk).
 - **Templates** — the worksheet files scaffolded into your project workspace, plus the workspace `CLAUDE.md`.
 - **Worked examples** — Augury (WS2), Inergio (full navigator), Ceal (WS1), bundled as few-shot references.
-- **Three bundled workflows** — `workflows/wf-market-research.js` (WtP-tuned deep research for WS2), `workflows/wf-advisory-board.js` (convene the panel: intake → parallel review → synthesis), and `workflows/wf-customer-discovery.js` (synthetic, skeptical customer interviews → draft Factor-1 score). All Claude-Code-only, invoked by `scriptPath` from the plugin; skills fall back gracefully (to subagents) elsewhere.
+- **Three workflow blueprints** — for WtP-tuned deep research (`market-research`), the advisory board (intake → parallel review → synthesis) and synthetic, skeptical customer interviews (→ draft Factor-1 score). Each is a Markdown specification in the skill's `references/workflow-blueprint.md`; in Claude Code, Claude writes the workflow from it and runs it. Elsewhere the skills fall back gracefully to subagents.
 
 ### Market research: three tiers
 
@@ -81,23 +79,21 @@ The `market-research` skill picks an engine by **capability** — is the `Workfl
 
 1. **Bundled subagent** — the **fallback** when `Workflow` is absent; **portable**, works on any Agent Skills surface.
 2. **Built-in `deep-research` workflow** — broad, adversarially-verified web research (**Claude Code only**).
-3. **Bundled `wf-market-research` workflow** — factor-tuned, checks every number with a three-lens panel (source, recency, scope) (**Claude Code only**, invoked by `scriptPath` straight from the plugin — no install step).
+3. **WtP research workflow** — factor-tuned, checks every number through three lenses (source, recency, scope) (**Claude Code only**; Claude writes it from the skill's blueprint).
 
 Tiers 2–3 use the Claude Code `Workflow` tool. On other surfaces the skill **falls back to Tier 1** and says so in one plain sentence — the plugin never hard-depends on a Claude-Code-only feature. Every tier returns findings with their sources, shown by default; the factor's confidence colour stays the team's call.
 
 ## Requirements
 
-- **Claude Code** for the full experience (the `/where-to-plai:*` commands and the bundled workflows).
-- The **skills and agents are portable** — they run on any Agent Skills surface. Only the three bundled `workflows/*.js` and the `deep-research` tier are Claude-Code-only, and the plugin degrades gracefully where they are absent.
-- `worksheet-view` renders with a bundled Python script (`skills/worksheet-view/renderer/render.py`), run with plain `python3` (Windows: `py`). It needs **Python 3.9 or newer** and nothing else: its two libraries, Jinja2 and MarkupSafe, ship inside the plugin, so there is nothing to install.
+- **Claude Code** for the full experience (the `/where-to-plai:*` commands and the workflows).
+- The **skills and agents are portable** — they run on any Agent Skills surface. Only the three workflows and the `deep-research` tier are Claude-Code-only, and the plugin degrades gracefully where they are absent.
 
 ## What the plugin runs, reads and writes
 
 **Runs**
 
-- **Skills and agents** are Markdown instructions that Claude follows in your session. The plugin has no hooks, no MCP servers and no install scripts; nothing runs in the background.
-- **Three Claude Code workflows** (`workflows/wf-*.js`) orchestrate Claude agents for market research, the advisory board and synthetic customer interviews. They run only inside Claude Code, when a skill calls them. The skill writes the results into the workspace.
-- **One local Python script**, `render.py`, runs only when you ask for the worksheet view. It reads `where-to-play/wtp-data.json` and writes HTML pages. It makes no network calls.
+- **Skills and agents** are Markdown instructions that Claude follows in your session. The plugin contains only Markdown, JSON and one image; it has no scripts, hooks, MCP servers or install steps, and nothing runs in the background.
+- **Three Claude Code workflows** orchestrate Claude agents for market research, the advisory board and synthetic customer interviews. The plugin ships no scripts for them, only Markdown blueprints; when a skill needs one, Claude writes the workflow from the blueprint and runs it in Claude Code. The skill writes the results into the workspace.
 - For broad market questions, the `market-research` skill can call Claude Code's built-in `deep-research` workflow. That workflow is part of Claude Code, not of this plugin.
 
 **Fetches**
@@ -114,7 +110,6 @@ Tiers 2–3 use the Claude Code `Workflow` tool. On other surfaces the skill **f
 
 - The `where-to-play/` workspace: the worksheets, `assumptions.md`, one file per opportunity in `02_attractiveness-map/`, and the notes from synthetic customer interviews.
 - A short `CLAUDE.md` in the project root with the workspace ground rules, during setup. If a `CLAUDE.md` already exists, the guide asks first and offers to append; it never overwrites it.
-- For the worksheet view: `where-to-play/wtp-data.json` and the `where-to-play/navigator/` folder. Rendering again replaces the pages and the style, font and image folders inside it. The pages load only local files and open offline.
 
 **Never**
 
@@ -124,7 +119,6 @@ The plugin collects no user data.
 
 ## Troubleshooting
 
-- **The worksheet view does not render.** Check your Python version with `python3 --version` (Windows: `py --version`); it must be 3.9 or newer. Nothing else needs to be installed.
 - **No deep research, advisory-board or interview workflow runs.** These workflows need Claude Code. On other surfaces the skills fall back to subagents or run the steps themselves, and tell you so in one sentence.
 - **Web research finds nothing.** Research uses Claude's `WebSearch` and `WebFetch` tools. Check that they are allowed in your Claude Code permissions.
 - **Update or reinstall the plugin.** Run `claude plugin marketplace update where-to-plai`, then `claude plugin update where-to-plai@where-to-plai`, and restart Claude Code. To reinstall, run `claude plugin uninstall where-to-plai@where-to-plai`, then install it again as shown under Installation.
@@ -133,6 +127,10 @@ The plugin collects no user data.
 ## Status
 
 This is **version 1.0.4**. The `persona-*` agents (an optimist and a skeptic who debate an opportunity) and the `advisor-*` agents (four of the five advisory-board members; the fifth is the Score Examiner) are explicitly experimental "Framework plus": provocations, not verdicts. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
+
+> **Temporarily removed.** Anthropic's plugin directory currently doesn't accept two parts of earlier versions from community plugins, so we took them out while we work on bringing them back:
+> - **Worksheet view** — rendered the filled worksheets as web pages in the look of the Where-to-Play web app. It needs a Python renderer, templates, styles and fonts, which the directory doesn't accept.
+> - **Pre-built workflow scripts** — ran market research, the advisory board and the synthetic customer interviews as multi-agent workflows. These three functions remain: each skill now carries its workflow as a Markdown blueprint, and Claude writes and runs the workflow from it.
 
 ## Feedback
 
