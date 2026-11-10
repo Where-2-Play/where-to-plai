@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] — 2026-11-10
+
+Meets the plugin directory's file rules: workflows ship as Markdown blueprints, and the worksheet view is out for now.
+
 ### Removed
 - **Worksheet view**, temporarily. Anthropic's plugin directory currently accepts from community plugins only Markdown, text, JSON, YAML and common image files, so its Python renderer, templates, styles and fonts (and the licenses of the bundled Jinja2, MarkupSafe, Bootstrap and Open Sans) are out. We are working on bringing it back.
 - **Pre-built workflow scripts** (`workflows/wf-*.js`): the directory accepts workflow scripts only from Verified organizations. Each workflow now ships as a Markdown blueprint (see Changed); we are working on bringing the scripts back.
@@ -177,7 +181,8 @@ Initial prototype scaffold for co-creation with the methodology's authors.
 - [README.md](README.md) — plugin overview, installation, and usage.
 - [Documentation](../../docs/usage.md) — long-form usage, methodology, and architecture docs.
 
-[Unreleased]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.4...HEAD
+[Unreleased]: https://github.com/Where-2-Play/where-to-plai/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.4...v1.1.0
 [1.0.4]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/Where-2-Play/where-to-plai/compare/v1.0.1...v1.0.2

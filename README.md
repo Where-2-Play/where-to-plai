@@ -76,7 +76,7 @@ where-to-plai/
 
 ## Status
 
-This is **version 1.0.4**. The `persona-*` agents (an optimist and a skeptic who debate an opportunity) and the `advisor-*` agents (four of the five advisory-board members; the fifth is the Score Examiner) are explicitly experimental "Framework plus": provocations, not verdicts. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
+This is **version 1.1.0**. The `persona-*` agents (an optimist and a skeptic who debate an opportunity) and the `advisor-*` agents (four of the five advisory-board members; the fifth is the Score Examiner) are explicitly experimental "Framework plus": provocations, not verdicts. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
 
 ## Feedback
 

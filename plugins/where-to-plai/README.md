@@ -126,7 +126,7 @@ The plugin collects no user data.
 
 ## Status
 
-This is **version 1.0.4**. The `persona-*` agents (an optimist and a skeptic who debate an opportunity) and the `advisor-*` agents (four of the five advisory-board members; the fifth is the Score Examiner) are explicitly experimental "Framework plus": provocations, not verdicts. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
+This is **version 1.1.0**. The `persona-*` agents (an optimist and a skeptic who debate an opportunity) and the `advisor-*` agents (four of the five advisory-board members; the fifth is the Score Examiner) are explicitly experimental "Framework plus": provocations, not verdicts. The thinker advisors are anonymous experts named by their function; none is presented as a real person.
 
 > **Temporarily removed.** Anthropic's plugin directory currently doesn't accept two parts of earlier versions from community plugins, so we took them out while we work on bringing them back:
 > - **Worksheet view** — rendered the filled worksheets as web pages in the look of the Where-to-Play web app. It needs a Python renderer, templates, styles and fonts, which the directory doesn't accept.
