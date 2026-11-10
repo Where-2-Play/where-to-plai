@@ -46,9 +46,9 @@ Five phases:
    then fetching credible primary sources, dating every figure, and returning findings with
    sources, a confidence flag, and an `is_quantitative` flag.
 3. **Verify** — the quantitative claims are de-duplicated and capped (at 12), then checked by
-   three **different lens agents** in parallel: a *source-credibility* lens, a *recency/validity*
-   lens, and a *scope-match* lens, each judging every claim. A figure that fails the majority of
-   its lenses has its confidence downgraded a notch (green→orange, orange→red) and
+   a **perspective-diverse three-lens panel** per claim: a *source-credibility* lens, a
+   *recency/validity* lens, and a *scope-match* lens, one agent each, all run in parallel. A figure
+   that fails the majority of its lenses has its confidence downgraded a notch (green→orange, orange→red) and
    carries the concerns forward. Three *different* lenses, not N identical refuters, because a
    market number can be wrong in three distinct ways.
 4. **Synthesize** — a high-effort agent merges semantic duplicates, drops the unsupported and

@@ -22,7 +22,7 @@ The specification Claude follows when it writes the WtP market-research workflow
 
 ## Phases
 
-Workflow name `wtp-market-research`, five phases: **Scope**, **Search**, **Verify**, **Synthesize**, **Critique**. At most 11 agents in all.
+Workflow name `wtp-market-research`, five phases: **Scope**, **Search**, **Verify**, **Synthesize**, **Critique**. With 5 sub-questions and 12 verified claims that is up to 44 agents. That size is intended: the per-claim checks are what this tier is for, and the team asked for it by asking for this research.
 
 ### 1. Scope — one agent, low effort, schema `SCOPE`
 
@@ -35,23 +35,24 @@ Workflow name `wtp-market-research`, five phases: **Scope**, **Search**, **Verif
 > Evidence that would answer it: *‹evidence›*
 > Search the web breadth-first, then fetch the most credible, recent, PRIMARY sources. Record the date of every figure. For any number, prefer figures you can corroborate across independent sources. Return findings with sources and a confidence flag each, plus what remains unknown. Mark is_quantitative=true for numeric claims.
 
-Then collect all findings. Take the quantitative ones, drop duplicates (same claim text, ignoring case and surrounding spaces), and keep at most **12** for verification; say so if more were found. Give each kept claim a short id (`c1`, `c2`, …).
+Then collect all findings. Take the quantitative ones, drop duplicates (same claim text, ignoring case and surrounding spaces), and keep at most **12** for verification; say so if more were found.
 
-### 3. Verify — three lens agents in parallel, medium effort, schema `VERDICTS`
+### 3. Verify — a three-lens panel per claim, all in parallel, medium effort, schema `VERDICT`
 
-A market figure can be wrong in three different ways, so use three **different** lenses, not three identical checkers. Each lens agent gets **all** claims to verify (id, claim, value, cited sources) plus the research question, and returns one verdict per claim id. Prompt:
+A market figure can be wrong in three different ways, so each claim gets three **different** lenses, not three identical checkers. Run one agent per claim and lens (up to 12 × 3), all in parallel, so every figure gets a focused check of its own. Prompt:
 
-> Quantitative claims under scrutiny, as JSON: *‹claims›*
+> Quantitative claim under scrutiny: "*‹claim›*" (value: *‹value or n/a›*)
+> Cited sources: *‹sources, or none›*
 > Original research question: *‹question›*
-> Examine every figure through ONE lens only — *‹lens›*
-> For each claim id, return trustworthy=true only if the figure holds up on YOUR lens; default to false when in doubt. If sources disagree, report the range.
+> Examine this figure through ONE lens only — *‹lens›*
+> Return trustworthy=true only if the figure holds up on YOUR lens; default to false when in doubt. If sources disagree, report the range.
 
 The three lenses:
 - **source** — SOURCE credibility: is this figure traceable to a credible, primary, independent source — not a content farm or a circular re-citation? Search to confirm. Untrustworthy if no credible independent source exists.
 - **recency** — RECENCY / validity: how old is this figure and is it still valid today? Note its date. Untrustworthy if stale, or undated and likely outdated.
 - **scope** — SCOPE match: does the figure measure the SAME thing the question asks — same segment, geography and definition (e.g. TAM vs SAM, global vs regional, units vs revenue)? Untrustworthy if it silently measures something else.
 
-**Majority rule**, per claim, over the lenses that returned a verdict for it: if fewer than half rated it trustworthy (fewer than 2 of 3), lower its confidence one step (green → orange, orange → red) and attach the concerns of the lenses that rejected it. Attach the first range any lens reported.
+**Majority rule**, per claim, over the lenses that returned a verdict: if fewer than half rated it trustworthy (fewer than 2 of 3), lower its confidence one step (green → orange, orange → red) and attach the concerns of the lenses that rejected it. Attach the first range any lens reported.
 
 ### 4. Synthesize — one agent, high effort, schema `SYNTH`
 
@@ -122,26 +123,16 @@ The three lenses:
 }
 ```
 
-`VERDICTS`:
+`VERDICT`:
 
 ```json
 {
   "type": "object",
-  "required": ["verdicts"],
+  "required": ["trustworthy", "note"],
   "properties": {
-    "verdicts": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["id", "trustworthy", "note"],
-        "properties": {
-          "id": { "type": "string", "description": "the claim id as given" },
-          "trustworthy": { "type": "boolean", "description": "true only if the figure holds up on THIS lens; default false when in doubt" },
-          "note": { "type": "string", "description": "one-line reason / concern on this lens" },
-          "range": { "type": "string", "description": "the spread if sources disagree, else empty" }
-        }
-      }
-    }
+    "trustworthy": { "type": "boolean", "description": "true only if the figure holds up on THIS lens; default false when in doubt" },
+    "note": { "type": "string", "description": "one-line reason / concern on this lens" },
+    "range": { "type": "string", "description": "the spread if sources disagree, else empty" }
   }
 }
 ```

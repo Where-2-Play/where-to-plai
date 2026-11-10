@@ -86,7 +86,7 @@ not by guessing the surface and not by stakes:
    (scope → parallel search → fetch → multi-vote verify → cited synthesis). **Claude Code only.** The
    default for broad/open questions and for the non-quantitative factors.
 3. **Tier 3 — the WtP research workflow, written from the skill's blueprint.** Factor-tuned; scopes into
-   falsifiable sub-questions, then checks **every number** through three lens agents (source / recency /
+   falsifiable sub-questions, then checks **every number** through its own three-lens panel (source / recency /
    scope) plus a completeness critic. **Claude Code only.** Applies to
    exactly the two quantitative factors — **Market volume** and **Economic viability**.
 

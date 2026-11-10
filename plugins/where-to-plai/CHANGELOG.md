@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Market research (Tier 3): every figure gets its own three-lens check again (source, recency, scope; one agent per lens and figure, up to 12 figures), as in the pre-built script. 1.1.0 had bundled this into three agents that each checked all figures at once.
+
 ## [1.1.0] — 2026-11-10
 
 Meets the plugin directory's file rules: workflows ship as Markdown blueprints, and the worksheet view is out for now.
